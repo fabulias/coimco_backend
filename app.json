@@ -1,0 +1,15 @@
+{
+  "name": "Coimco",
+  "description": "API Restful",
+  "keywords": [
+    "coimco",
+    "go",
+    "gorp",
+    "gin",
+    "postgres"
+  ],
+  "image": "heroku/go:1.6",
+  "mount_dir": "src/github.com/fabulias/coimco",
+  "website": "http://github.com/fabulias/coimco",
+  "repository": "http://github.com/fabulias/coimco"
+}
