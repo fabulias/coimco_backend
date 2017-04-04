@@ -9,7 +9,7 @@
     "postgres"
   ],
   "image": "heroku/go:1.6",
-  "mount_dir": "src/github.com/fabulias/coimco",
-  "website": "http://github.com/fabulias/coimco",
-  "repository": "http://github.com/fabulias/coimco"
+  "mount_dir": "src/giteit.udp.cl/fabulias/coimco_backend",
+  "website": "http://giteit.udp.cl/fabulias/coimco_backend",
+  "repository": "http://giteit.udp.cl/fabulias/coimco_backend"
 }

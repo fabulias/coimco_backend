@@ -18,8 +18,6 @@ func checkErr(err error, msg string) {
 }
 
 func initDb() *gorp.DbMap {
-	log.Println("initDb")
-
 	// connect to db using standard Go database/sql API
 	// use whatever database/sql driver you wish
 	db, err := sql.Open("sqlite3", "db.local")

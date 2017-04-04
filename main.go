@@ -1,7 +1,7 @@
 package main
 
 import (
-	"coimco/routes"
+	"coimco_backend/routes"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
