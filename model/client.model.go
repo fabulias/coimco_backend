@@ -1,10 +1,17 @@
 package model
 
-import "log"
+import "fmt"
 
-func Customers() []Client {
+func GetCustomers() []Client {
 	var customers []Client
-	_, err = dbmap.Select(customers, "SELECT * FROM customers")
-	log.Println(customers)
+	_, err = dbmap.Select(&customers, "select * from customer")
+	checkErr(err, "Error in Select SQL dbamp")
+	fmt.Println(customers)
 	return customers
+}
+
+func InsertCustomers(in Client) Client {
+	err = dbmap.Insert(&in)
+	checkErr(err, "Insert customer failed")
+	return in
 }

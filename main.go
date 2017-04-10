@@ -46,7 +46,10 @@ func main() {
 		})
 
 		v1.GET("/customers", routes.GetCustomers)
+		v1.GET("/products", routes.GetProducts)
 		v1.GET("/providers", routes.GetProviders)
+
+		v1.POST("/customers", routes.PostCustomers)
 	}
 	r.Run(":" + port)
 }
