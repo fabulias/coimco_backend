@@ -5,6 +5,7 @@ import (
 	// _ "github.com/lib/pq"
 	"log"
 
+	_ "github.com/mattn/go-sqlite3"
 	"gopkg.in/gorp.v2"
 )
 
@@ -20,7 +21,7 @@ func checkErr(err error, msg string) {
 func initDb() *gorp.DbMap {
 	// connect to db using standard Go database/sql API
 	// use whatever database/sql driver you wish
-	db, err := sql.Open("sqlite3", "db.local")
+	db, _ := sql.Open("sqlite3", "db.local")
 	checkErr(err, "sql.Open failed")
 
 	// construct a gorp DbMap

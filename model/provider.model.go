@@ -9,8 +9,13 @@ func GetProviders() []Provider {
 	return providers
 }
 
-func InsertProviders(in Provider) Provider {
+func InsertProviders(in Provider) bool {
 	err = dbmap.Insert(&in)
 	checkErr(err, "Insert Provider Failed")
-	return in
+	if err != nil {
+		return true
+	} else {
+		return false
+	}
+
 }

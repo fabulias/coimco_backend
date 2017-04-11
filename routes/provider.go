@@ -2,18 +2,12 @@ package routes
 
 import (
 	"coimco_backend/model"
-	"log"
+
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
-
-func checkErr(err error, msg string) {
-	if err != nil {
-		log.Fatalln(msg)
-	}
-}
 
 //Método que busca todos los usuarios de la bdd.
 func GetProviders(c *gin.Context) {
@@ -36,25 +30,34 @@ func GetProviders(c *gin.Context) {
 }
 
 func PostProviders(c *gin.Context) {
-	var in model.Provider
-	err := c.BindJSON(&in)
-	checkErr(err, "Error in BindJSON")
+	var pin model.Provider
+	err := c.BindJSON(&pin)
 
-	in = model.InsertProviders(in)
-	if len(providers) == 0 {
+	if err != nil {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
-			"message": "There are no user",
+			"message": "Mising some field",
 		}
-		c.JSON(response)
+		c.JSON(http.StatusBadRequest, response)
 	} else {
-		response := gin.H{
-			"status":  "success",
-			"data":    providers,
-			"message": nil,
+		status := model.InsertProviders(pin)
+		if status {
+			response := gin.H{
+				"status":  "success",
+				"data":    nil,
+				"message": "Insert Success",
+			}
+			c.JSON(http.StatusOK, response)
+		} else {
+			response := gin.H{
+				"status":  "Error",
+				"data":    nil,
+				"message": "Provider already exist",
+			}
+			c.JSON(http.StatusBadRequest, response)
 		}
-		c.JSON(http.StatusOK, response)
+
 	}
 
 }
