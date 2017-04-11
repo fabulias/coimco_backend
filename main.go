@@ -2,10 +2,11 @@ package main
 
 import (
 	"coimco_backend/routes"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gin-gonic/gin"
 	//"strings"
 )
 
@@ -47,6 +48,9 @@ func main() {
 
 		v1.GET("/customers", routes.GetCustomers)
 		v1.GET("/providers", routes.GetProviders)
+
+		v1.POST("/providers", routes.PostProviders)
+
 	}
 	r.Run(":" + port)
 }
