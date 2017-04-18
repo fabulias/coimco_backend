@@ -2,24 +2,34 @@ package model
 
 import (
 	"database/sql"
-	// _ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
 	"gopkg.in/gorp.v2"
 	"log"
+	"strings"
 )
 
 var err error
 var dbmap = initDb()
 
+func CheckInClient(in Client) bool {
+	log.Println(in)
+	if strings.Compare(in.name, "") != 0 && strings.Compare(in.phone, "") != 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
 func checkErr(err error, msg string) {
 	if err != nil {
-		log.Fatalln(msg)
+		log.Println(msg)
 	}
 }
 
 func initDb() *gorp.DbMap {
 	// connect to db using standard Go database/sql API
 	// use whatever database/sql driver you wish
+	log.Println("ASdasdasdaASDASDsds")
 	db, err := sql.Open("sqlite3", "db.local")
 	checkErr(err, "sql.Open failed")
 

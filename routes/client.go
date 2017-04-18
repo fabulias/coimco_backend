@@ -2,7 +2,6 @@ package routes
 
 import (
 	"coimco_backend/model"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	"log"
@@ -11,7 +10,7 @@ import (
 
 func checkErr(err error, msg string) {
 	if err != nil {
-		log.Fatalln(msg)
+		log.Println(msg)
 	}
 }
 
@@ -38,24 +37,25 @@ func GetCustomers(c *gin.Context) {
 //Método que busca todos los usuarios de la bdd.
 func PostCustomers(c *gin.Context) {
 	var in model.Client
+	log.Println("AQUI")
 	err := c.BindJSON(&in)
 	checkErr(err, "error in BindJSON")
-	fmt.Println(in)
-
-	in = model.InsertCustomers(&in)
-	if len(customers) == 0 {
+	log.Println("AQUI -> ", in)
+	if !model.CheckInClient(in) {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
-			"message": "There are no users",
+			"message": "I can't insert a user",
 		}
 		c.JSON(http.StatusNotFound, response)
-	} else {
-		response := gin.H{
-			"status":  "success",
-			"data":    customers,
-			"message": nil,
-		}
-		c.JSON(http.StatusOK, response)
+		return
 	}
+	customer, _ := model.InsertCustomers(in)
+
+	response := gin.H{
+		"status":  "success",
+		"data":    customer,
+		"message": nil,
+	}
+	c.JSON(http.StatusOK, response)
 }

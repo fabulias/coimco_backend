@@ -1,17 +1,22 @@
 package model
 
-import "fmt"
+import "log"
 
 func GetCustomers() []Client {
 	var customers []Client
+	log.Println("ASD")
 	_, err = dbmap.Select(&customers, "select * from customer")
 	checkErr(err, "Error in Select SQL dbamp")
-	fmt.Println(customers)
 	return customers
 }
 
-func InsertCustomers(in Client) Client {
+func InsertCustomers(in Client) (Client, bool) {
+	log.Println(in)
 	err = dbmap.Insert(&in)
 	checkErr(err, "Insert customer failed")
-	return in
+	if err != nil {
+		return in, false
+	} else {
+		return in, true
+	}
 }

@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	//"strings"
 )
 
 func checkErr(err error, msg string) {
@@ -29,8 +28,6 @@ func main() {
 		port = "8080"
 	}
 
-	// initialize the DbMap
-
 	r := gin.New()
 
 	// Global middleware
@@ -44,7 +41,6 @@ func main() {
 		v1.GET("/port", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"Port": port})
 		})
-
 		v1.GET("/customers", routes.GetCustomers)
 		v1.GET("/products", routes.GetProducts)
 		v1.GET("/providers", routes.GetProviders)
