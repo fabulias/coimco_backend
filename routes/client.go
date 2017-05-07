@@ -16,7 +16,9 @@ func checkErr(err error, msg string) {
 
 //Método que busca todos los usuarios de la bdd.
 func GetCustomers(c *gin.Context) {
+	limit := c.DefaultQuery("limit", "")
 	customers := model.GetCustomers()
+
 	if len(customers) == 0 {
 		response := gin.H{
 			"status":  "error",
@@ -37,10 +39,8 @@ func GetCustomers(c *gin.Context) {
 //Método que busca todos los usuarios de la bdd.
 func PostCustomers(c *gin.Context) {
 	var in model.Client
-	log.Println("AQUI")
 	err := c.BindJSON(&in)
 	checkErr(err, "error in BindJSON")
-	log.Println("AQUI -> ", in)
 	if !model.CheckInClient(in) {
 		response := gin.H{
 			"status":  "error",
@@ -50,7 +50,7 @@ func PostCustomers(c *gin.Context) {
 		c.JSON(http.StatusNotFound, response)
 		return
 	}
-	customer, _ := model.InsertCustomers(in)
+	customer, _ := model.InsertCustomers(&in)
 
 	response := gin.H{
 		"status":  "success",
@@ -58,4 +58,8 @@ func PostCustomers(c *gin.Context) {
 		"message": nil,
 	}
 	c.JSON(http.StatusOK, response)
+}
+
+func HeadCustomers(c *gin.Context) {
+
 }

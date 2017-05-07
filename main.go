@@ -46,6 +46,8 @@ func main() {
 		v1.GET("/providers", routes.GetProviders)
 
 		v1.POST("/customers", routes.PostCustomers)
+
+		v1.HEAD("/customers", routes.HeadCustomers)
 	}
 	r.Run(":" + port)
 }

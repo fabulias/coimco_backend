@@ -13,7 +13,7 @@ var dbmap = initDb()
 
 func CheckInClient(in Client) bool {
 	log.Println(in)
-	if strings.Compare(in.name, "") != 0 && strings.Compare(in.phone, "") != 0 {
+	if strings.Compare(in.Name, "") != 0 && strings.Compare(in.Phone, "") != 0 {
 		return true
 	} else {
 		return false
@@ -29,7 +29,7 @@ func checkErr(err error, msg string) {
 func initDb() *gorp.DbMap {
 	// connect to db using standard Go database/sql API
 	// use whatever database/sql driver you wish
-	log.Println("ASdasdasdaASDASDsds")
+	log.Println("Initialize database")
 	db, err := sql.Open("sqlite3", "db.local")
 	checkErr(err, "sql.Open failed")
 

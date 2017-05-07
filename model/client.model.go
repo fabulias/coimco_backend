@@ -10,10 +10,8 @@ func GetCustomers() []Client {
 	return customers
 }
 
-func InsertCustomers(in Client) (Client, bool) {
-	log.Println(in)
-	err = dbmap.Insert(&in)
-	checkErr(err, "Insert customer failed")
+func InsertCustomers(in *Client) (*Client, bool) {
+	err = dbmap.Insert(in)
 	if err != nil {
 		return in, false
 	} else {
