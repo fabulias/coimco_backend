@@ -29,7 +29,7 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-
+	println("Hola mundo el puerto es: " + port)
 	// initialize the DbMap
 
 	r := gin.New()
@@ -49,7 +49,7 @@ func main() {
 		v1.GET("/customers", routes.GetCustomers)
 		v1.GET("/providers", routes.GetProviders)
 
-		v1.POST("/providers", routes.PostProviders)
+		v1.POST("/providers", routes.PostProvider)
 
 	}
 	r.Run(":" + port)

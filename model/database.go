@@ -21,8 +21,10 @@ func checkErr(err error, msg string) {
 func initDb() *gorp.DbMap {
 	// connect to db using standard Go database/sql API
 	// use whatever database/sql driver you wish
-	db, _ := sql.Open("sqlite3", "db.local")
+	db, err := sql.Open("sqlite3", "db.local")
 	checkErr(err, "sql.Open failed")
+
+	println("CREANDO BDD")
 
 	// construct a gorp DbMap
 	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.SqliteDialect{}}

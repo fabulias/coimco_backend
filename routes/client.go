@@ -2,9 +2,10 @@ package routes
 
 import (
 	"coimco_backend/model"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
-	"net/http"
 )
 
 //Método que busca todos los usuarios de la bdd.
@@ -25,4 +26,5 @@ func GetCustomers(c *gin.Context) {
 		}
 		c.JSON(http.StatusOK, response)
 	}
+
 }

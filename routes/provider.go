@@ -3,10 +3,10 @@ package routes
 import (
 	"coimco_backend/model"
 
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/lib/pq"
 )
 
 //Método que busca todos los usuarios de la bdd.
@@ -29,10 +29,9 @@ func GetProviders(c *gin.Context) {
 	}
 }
 
-func PostProviders(c *gin.Context) {
+func PostProvider(c *gin.Context) {
 	var pin model.Provider
 	err := c.BindJSON(&pin)
-
 	if err != nil {
 		response := gin.H{
 			"status":  "error",
@@ -42,6 +41,7 @@ func PostProviders(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 	} else {
 		status := model.InsertProviders(pin)
+		fmt.Println(pin)
 		if status {
 			response := gin.H{
 				"status":  "success",
