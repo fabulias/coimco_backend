@@ -35,19 +35,20 @@ func main() {
 	r.Use(gin.Recovery())
 
 	r.Use(Cors())
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"Ping": "Pong"})
+	})
 	// Simple group: v1
 	v1 := r.Group("/v1")
 	{
-		v1.GET("/port", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{"Port": port})
-		})
 		v1.GET("/customers", routes.GetCustomers)
 		v1.GET("/products", routes.GetProducts)
 		v1.GET("/providers", routes.GetProviders)
 
+		v1.GET("/customers/:mail", routes.GetCustomer)
+
 		v1.POST("/customers", routes.PostCustomers)
 
-		v1.HEAD("/customers", routes.HeadCustomers)
 	}
 	r.Run(":" + port)
 }

@@ -1,7 +1,9 @@
 package model
 
-type Client struct {
-	Id    int64  `db:"id, primarykey, autoincrement"`
-	Name  string `form:"name" json:"name" binding:"required" db:"name"`
-	Phone string `form:"phone" json:"phone" binding:"required" db:"phone"`
+type Customer struct {
+	//Agent
+	Rut   string `json:"rut" db:"rut, primarykey" binding:"required"`
+	Name  string `json:"name" db:"name" binding:"required"`
+	Mail  string `json:"mail" db:"mail" binding:"required"`
+	Phone string `json:"phone" db:"phone"`
 }
