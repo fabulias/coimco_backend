@@ -8,23 +8,38 @@ import (
 	"net/http"
 )
 
+//Check error function
 func checkErr(err error, msg string) {
 	if err != nil {
 		log.Println(msg)
 	}
 }
 
-//Método que busca todos los usuarios de la bdd.
+var (
+	Limit         = "limit"
+	Offset        = "offset"
+	DefaultLimit  = "20"
+	DefaultOffset = "0"
+	TotalCount    = "X-Total-Count"
+)
+
+//This route asking for customers in a range, if not exists range,
+//limit and offset are 20 and 0 by default
 func GetCustomers(c *gin.Context) {
-	limit := c.DefaultQuery("limit", "20")
-	offset := c.DefaultQuery("offset", "0")
+	//Creating limit and offset from query
+	limit := c.DefaultQuery(Limit, DefaultLimit)
+	offset := c.DefaultQuery(Offset, DefaultOffset)
+	//Asking to model
 	customers, count := model.GetCustomers(limit, offset)
-	c.Header("X-Total-Count", count)
-	if len(customers) == 0 {
+	//Updating X-Total-Count
+	c.Header(TotalCount, count)
+	//If length of customers is zero,
+	//is because no exist customers
+	if checkSize(customers) {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
-			"message": "There are no users",
+			"message": GET_MESSAGE_ERROR_PLURAL + " clients",
 		}
 		c.JSON(http.StatusNotFound, response)
 	} else {
@@ -38,26 +53,34 @@ func GetCustomers(c *gin.Context) {
 }
 
 func GetCustomer(c *gin.Context) {
-	//mail := c.Param("mail")
+	mail := c.Param("mail")
+	if checkSize(mail) {
+		log.Println(mail)
+
+	}
 	var customer *model.Customer
 	model.GetCustomer(customer)
 }
 
-//Método que busca todos los usuarios de la bdd.
+//This route insert a customer in his table
 func PostCustomers(c *gin.Context) {
 	var in model.Customer
 	err := c.BindJSON(&in)
-	checkErr(err, "error in BindJSON")
+	checkErr(err, BIND_JSON)
+	//Check if client parameters are valid
 	if !model.CheckInCustomer(in) {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
-			"message": "I can't insert a user",
+			"message": POST_MESSAGE_ERROR_PARAMS,
 		}
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
+	//As the params are correct, we proceeded
+	//to insert input customer
 	customer, flag := model.InsertCustomers(&in)
+	//Flag is true if the model succeeds in inserting the client
 	if flag {
 		response := gin.H{
 			"status":  "success",
@@ -67,11 +90,11 @@ func PostCustomers(c *gin.Context) {
 		c.JSON(http.StatusOK, response)
 	} else {
 		response := gin.H{
-			"status":  "success-error",
+			"status":  "error",
 			"data":    customer,
-			"message": "Inserting client w/o arguments",
+			"message": POST_MESSAGE_ERROR + " a client",
 		}
-		c.JSON(http.StatusOK, response)
+		c.JSON(http.StatusBadRequest, response)
 	}
 
 }

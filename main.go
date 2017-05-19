@@ -39,7 +39,7 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"Ping": "Pong"})
 	})
 	// Simple group: v1
-	v1 := r.Group("/v1")
+	v1 := r.Group("api")
 	{
 		v1.GET("/customers", routes.GetCustomers)
 		v1.GET("/products", routes.GetProducts)

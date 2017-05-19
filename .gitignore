@@ -23,7 +23,7 @@ _testmain.go
 *.test
 *.prof
 
+# Internal files
 *.DS_Store
-
-db.local
+*.db
 *.model_test.go
