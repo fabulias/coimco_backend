@@ -19,6 +19,31 @@ func CheckInCustomer(in Customer) bool {
 	}
 }
 
+func CheckInProduct(in Product) bool {
+	var flag bool = false
+	if strings.Compare(in.Name, "") != 0 {
+		flag = true
+		return flag
+	} else if strings.Compare(in.Details, "") != 0 {
+		flag = true
+		return flag
+	} else if in.Stock < 0 {
+		flag = true
+		return flag
+	} else if strings.Compare(in.Brand, "") != 0 {
+		flag = true
+		return flag
+	} else if strings.Compare(in.Category, "") != 0 {
+		flag = true
+		return flag
+	}
+	return flag
+}
+
+/*
+Stock Brand Category
+*/
+
 func checkErr(err error, msg string) {
 	if err != nil {
 		log.Println(msg)

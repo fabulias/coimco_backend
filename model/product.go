@@ -1,7 +1,10 @@
 package model
 
 type Product struct {
-	id        int    `db:"id, primarykey, autoincrement"`
-	name      string `form:"name" json:"name" binding:"required" db:"name"`
-	prototype string `form:"prototype" json:"prototype" binding:"required" db:"prototype"`
+	Id       int    `db:"id, primarykey, autoincrement"`
+	Name     string `json:"name" binding:"required" db:"name"`
+	Details  string `json:"details" binding:"required" db:"details"`
+	Stock    int    `json:"stock" binding:"required" db:"stock"`
+	Brand    string `json:"brand" binding:"required" db:"brand"`
+	Category string `json:"category" binding:"required" db:"category"`
 }

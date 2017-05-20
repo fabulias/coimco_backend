@@ -39,7 +39,7 @@ func GetCustomers(c *gin.Context) {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
-			"message": GET_MESSAGE_ERROR_PLURAL + " clients",
+			"message": GetMessageErrorPlural + " clients",
 		}
 		c.JSON(http.StatusNotFound, response)
 	} else {
@@ -63,23 +63,23 @@ func GetCustomer(c *gin.Context) {
 }
 
 //This route insert a customer in his table
-func PostCustomers(c *gin.Context) {
+func PostCustomer(c *gin.Context) {
 	var in model.Customer
 	err := c.BindJSON(&in)
-	checkErr(err, BIND_JSON)
+	checkErr(err, BindJson)
 	//Check if client parameters are valid
 	if !model.CheckInCustomer(in) {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
-			"message": POST_MESSAGE_ERROR_PARAMS,
+			"message": PostMessageErrorParams,
 		}
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 	//As the params are correct, we proceeded
 	//to insert input customer
-	customer, flag := model.InsertCustomers(&in)
+	customer, flag := model.InsertCustomer(&in)
 	//Flag is true if the model succeeds in inserting the client
 	if flag {
 		response := gin.H{
@@ -92,7 +92,7 @@ func PostCustomers(c *gin.Context) {
 		response := gin.H{
 			"status":  "error",
 			"data":    customer,
-			"message": POST_MESSAGE_ERROR + " a client",
+			"message": PostMessageError + " a client",
 		}
 		c.JSON(http.StatusBadRequest, response)
 	}

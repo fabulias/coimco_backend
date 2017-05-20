@@ -29,7 +29,7 @@ func GetCustomer(customer *Customer) *Customer {
 }
 
 //This function allow insert customer' resource
-func InsertCustomers(in *Customer) (*Customer, bool) {
+func InsertCustomer(in *Customer) (*Customer, bool) {
 	err = dbmap.Insert(in)
 	if err != nil {
 		return in, false
