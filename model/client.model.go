@@ -22,10 +22,12 @@ func GetCustomers(limit, offset string) ([]Customer, string) {
 }
 
 //This function allow obtain customer' resource for his id.
-func GetCustomer(customer *Customer) *Customer {
+func GetCustomer(rut string) (Customer, error) {
+	var customer Customer
+	customer.Rut = rut
 	err := dbmap.SelectOne(&customer, "select * from customer where rut=$1", customer.Rut)
 	checkErr(err, selectOneFailed)
-	return customer
+	return customer, err
 }
 
 //This function allow insert customer' resource

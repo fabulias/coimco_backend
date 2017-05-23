@@ -53,13 +53,23 @@ func GetCustomers(c *gin.Context) {
 }
 
 func GetCustomer(c *gin.Context) {
-	mail := c.Param("mail")
-	if checkSize(mail) {
-		log.Println(mail)
-
+	rut := c.Param("rut")
+	customer, err := model.GetCustomer(rut)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": GetMessageErrorSingular + " client with that rut",
+		}
+		c.JSON(http.StatusNotFound, response)
+	} else {
+		response := gin.H{
+			"status":  "success",
+			"data":    customer,
+			"message": nil,
+		}
+		c.JSON(http.StatusOK, response)
 	}
-	var customer *model.Customer
-	model.GetCustomer(customer)
 }
 
 //This route insert a customer in his table

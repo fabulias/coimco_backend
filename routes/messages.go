@@ -6,5 +6,7 @@ var (
 	PostMessageError        = "Error inserting"
 	PostMessageErrorParams  = "Error in query params"
 	BindJson                = "Error binding json"
-	LoginOK                 = "Rut and pass are correct"
+	LoginOK                 = "Mail and pass are correct, token it's OK"
+	LoginError              = "Mail or pass aren't correct"
+	TokenError              = "Error creating token"
 )
