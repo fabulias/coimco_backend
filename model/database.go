@@ -2,15 +2,17 @@ package model
 
 import (
 	"database/sql"
-	_ "github.com/mattn/go-sqlite3"
-	"gopkg.in/gorp.v2"
 	"log"
 	"strings"
+
+	_ "github.com/mattn/go-sqlite3"
+	"gopkg.in/gorp.v2"
 )
 
 var err error
 var dbmap = initDb()
 
+//Return true in case of that all params are okay
 func CheckInCustomer(in Customer) bool {
 	if strings.Compare(in.Name, "") != 0 && strings.Compare(in.Rut, "") != 0 && strings.Compare(in.Mail, "") != 0 {
 		return true
@@ -19,6 +21,32 @@ func CheckInCustomer(in Customer) bool {
 	}
 }
 
+//Return true in case of that all params are okay
+func CheckInAccount(in User_acc) bool {
+	var flag bool = false
+	if strings.Compare(in.Name, "") != 0 {
+		flag = true
+		return flag
+	} else if strings.Compare(in.Lastname, "") != 0 {
+		flag = true
+		return flag
+	} else if in.Role != 0 || in.Role != 1 {
+		flag = true
+		return flag
+	} else if strings.Compare(in.Mail, "") != 0 {
+		flag = true
+		return flag
+	} else if strings.Compare(in.Rut, "") != 0 {
+		flag = true
+		return flag
+	} else if strings.Compare(in.Pass, "") != 0 {
+		flag = true
+		return flag
+	}
+	return flag
+}
+
+//Return true in case of that all params are okay
 func CheckInProduct(in Product) bool {
 	var flag bool = false
 	if strings.Compare(in.Name, "") != 0 {
@@ -40,16 +68,13 @@ func CheckInProduct(in Product) bool {
 	return flag
 }
 
-/*
-Stock Brand Category
-*/
-
 func checkErr(err error, msg string) {
 	if err != nil {
 		log.Println(msg)
 	}
 }
 
+//Initialize database
 func initDb() *gorp.DbMap {
 	// connect to db using standard Go database/sql API
 	// use whatever database/sql driver you wish
@@ -65,6 +90,7 @@ func initDb() *gorp.DbMap {
 	dbmap.AddTableWithName(Customer{}, "customer")
 	dbmap.AddTableWithName(Product{}, "product")
 	dbmap.AddTableWithName(Provider{}, "provider")
+	dbmap.AddTableWithName(User_acc{}, "user_acc")
 
 	// create the table. in a production system you'd generally
 	// use a migration tool, or create the tables via scripts

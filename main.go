@@ -52,7 +52,7 @@ func main() {
 		//Methods POST
 		v1.POST("/customers", routes.PostCustomer)
 		v1.POST("/products", routes.PostProduct)
-
+		v1.POST("/accounts", routes.PostAccount)
 	}
 	r.Run(":" + port)
 }

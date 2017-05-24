@@ -1,11 +1,12 @@
 package routes
 
 import (
+	"log"
+	"net/http"
+
 	"coimco_backend/model"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
-	"log"
-	"net/http"
 )
 
 //Check error function

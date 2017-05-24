@@ -1,5 +1,6 @@
 package model
 
+//Product represents the products in the application
 type Product struct {
 	Id       int    `db:"id, primarykey, autoincrement"`
 	Name     string `json:"name" binding:"required" db:"name"`

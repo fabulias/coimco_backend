@@ -11,20 +11,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//my secret signature
-var mySigningKey = []byte("3f37722f5feb721161c13df2acf554e5")
+//Declaring errors and errors messages
+var (
+	unexpectedMethod = errors.New("Unexpected signing method")
+	invalidTimeToken = "Token time invalid"
+	timeOutToken     = "Token expired"
+	invalidToken     = "The token is not valid"
+)
 
 //This function return two things,
-//the first is a token and second is a possible error
+//the first is a token with its respective time
+//and second is a possible error in another case
 func CreateToken(mail string) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS512)
 	claims := token.Claims.(jwt.MapClaims)
-
 	claims["mail"] = mail
+	//Adding 30 days to expiration time
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 30).Unix()
-	log.Println(time.Now().Unix())
-	log.Println(claims["exp"])
-
 	return token.SignedString(mySigningKey)
 }
 
@@ -39,8 +42,8 @@ func ValidateToken() gin.HandlerFunc {
 		token, err := jwt.Parse(tokenString,
 			func(token *jwt.Token) (interface{}, error) {
 				// Validating the algorithm used
-				if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
-					return nil, errors.New("Unexpected signing method")
+				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+					return nil, unexpectedMethod
 				}
 				return mySigningKey, nil
 			})
@@ -63,7 +66,7 @@ func ValidateToken() gin.HandlerFunc {
 					response := gin.H{
 						"status":  "error",
 						"data":    nil,
-						"message": "Token time invalid",
+						"message": invalidTimeToken,
 					}
 					c.JSON(http.StatusUnauthorized, response)
 				}
@@ -72,7 +75,7 @@ func ValidateToken() gin.HandlerFunc {
 					response := gin.H{
 						"status":  "error",
 						"data":    nil,
-						"message": "Token expired",
+						"message": timeOutToken,
 					}
 					c.JSON(http.StatusUnauthorized, response)
 					c.Abort()
@@ -85,7 +88,7 @@ func ValidateToken() gin.HandlerFunc {
 				response := gin.H{
 					"status":  "error",
 					"data":    nil,
-					"message": "The token is not valid",
+					"message": invalidToken,
 				}
 				c.JSON(http.StatusUnauthorized, response)
 			}

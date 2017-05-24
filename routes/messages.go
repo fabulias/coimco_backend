@@ -1,5 +1,6 @@
 package routes
 
+//Messages to return request information
 var (
 	GetMessageErrorPlural   = "There are no"
 	GetMessageErrorSingular = "There is not"
