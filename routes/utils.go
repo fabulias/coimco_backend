@@ -13,6 +13,11 @@ func checkSize(sample interface{}) bool {
 			flag = true
 			return flag
 		}
+	case []model.Product:
+		if len(val) == 0 {
+			flag = true
+			return flag
+		}
 	case string:
 		if strings.Compare(val, "") == 0 {
 			flag = true

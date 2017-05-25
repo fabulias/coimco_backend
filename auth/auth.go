@@ -17,15 +17,17 @@ var (
 	invalidTimeToken = "Token time invalid"
 	timeOutToken     = "Token expired"
 	invalidToken     = "The token is not valid"
+	headerNotFound   = "Authorization header not found"
 )
 
 //This function return two things,
 //the first is a token with its respective time
 //and second is a possible error in another case
 func CreateToken(mail string) (string, error) {
-	token := jwt.New(jwt.SigningMethodHS512)
+	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 	claims["mail"] = mail
+	claims["iat"] = time.Now().Unix()
 	//Adding 30 days to expiration time
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 30).Unix()
 	return token.SignedString(mySigningKey)
@@ -37,7 +39,17 @@ func ValidateToken() gin.HandlerFunc {
 	log.Println("Validator JWT listening")
 	return func(c *gin.Context) {
 		//Parsing header request
-		tokenArray := strings.Split(c.Request.Header["Authorization"][0], " ")
+		headerAuth := c.Request.Header["Authorization"]
+		if len(headerAuth) < 1 {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": headerNotFound,
+			}
+			c.JSON(http.StatusBadRequest, response)
+			c.AbortWithStatus(http.StatusUnauthorized)
+		}
+		tokenArray := strings.Split(headerAuth[0], " ")
 		tokenString := tokenArray[1]
 		token, err := jwt.Parse(tokenString,
 			func(token *jwt.Token) (interface{}, error) {

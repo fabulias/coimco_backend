@@ -24,7 +24,7 @@ func GetProducts(c *gin.Context) {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
-			"message": GetMessageErrorPlural + " clients",
+			"message": GetMessageErrorPlural + " products",
 		}
 		c.JSON(http.StatusNotFound, response)
 	} else {

@@ -53,6 +53,7 @@ func GetCustomers(c *gin.Context) {
 	}
 }
 
+//This route return a client with a 'rut'
 func GetCustomer(c *gin.Context) {
 	rut := c.Param("rut")
 	customer, err := model.GetCustomer(rut)

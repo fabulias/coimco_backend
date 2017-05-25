@@ -48,6 +48,7 @@ func main() {
 		//Methods singular GET
 		v1.GET("/customers/:rut", routes.GetCustomer)
 		v1.GET("/products/:id", routes.GetProduct)
+		v1.GET("/accounts/:mail", routes.GetAccount)
 
 		//Methods POST
 		v1.POST("/customers", routes.PostCustomer)

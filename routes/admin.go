@@ -4,17 +4,17 @@ import (
 	"log"
 	"net/http"
 
+	"coimco_backend/hash"
 	"coimco_backend/model"
 	"github.com/gin-gonic/gin"
 )
 
+//This route insert an account in user_acc table
 func PostAccount(c *gin.Context) {
 	var in model.User_acc
 	err := c.BindJSON(&in)
 	checkErr(err, BindJson)
-	log.Println(in)
-	if !model.CheckInAccount(in) {
-		log.Println("HERE")
+	if model.CheckInAccount(in) {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
@@ -26,9 +26,20 @@ func PostAccount(c *gin.Context) {
 	//As the params are correct, we proceeded
 	//to insert input account
 	in.Active = true
-	log.Println(in)
+	hash_pass, err := hash.HashPassword(in.Pass)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": ErrorHashPassword,
+		}
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+	in.Pass = hash_pass
+	log.Println("in -> ", in)
 	account, flag := model.InsertAccount(&in)
-	//Flag is true if the model succeeds in inserting the client
+	//Flag is true if the model succeeds in inserting account
 	if flag {
 		response := gin.H{
 			"status":  "success",
@@ -40,8 +51,29 @@ func PostAccount(c *gin.Context) {
 		response := gin.H{
 			"status":  "error",
 			"data":    account,
-			"message": PostMessageError + " a account",
+			"message": PostMessageError + " account",
 		}
 		c.JSON(http.StatusBadRequest, response)
+	}
+}
+
+//This route return a account with a 'mail'
+func GetAccount(c *gin.Context) {
+	mail := c.Param("mail")
+	account, err := model.GetAccount(mail)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": GetMessageErrorSingular + " account with that mail",
+		}
+		c.JSON(http.StatusNotFound, response)
+	} else {
+		response := gin.H{
+			"status":  "success",
+			"data":    account,
+			"message": nil,
+		}
+		c.JSON(http.StatusOK, response)
 	}
 }

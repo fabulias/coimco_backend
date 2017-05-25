@@ -24,22 +24,22 @@ func CheckInCustomer(in Customer) bool {
 //Return true in case of that all params are okay
 func CheckInAccount(in User_acc) bool {
 	var flag bool = false
-	if strings.Compare(in.Name, "") != 0 {
+	if strings.Compare(in.Name, "") == 0 {
 		flag = true
 		return flag
-	} else if strings.Compare(in.Lastname, "") != 0 {
+	} else if strings.Compare(in.Lastname, "") == 0 {
 		flag = true
 		return flag
-	} else if in.Role != 0 || in.Role != 1 {
+	} else if in.Role != false && in.Role != true {
 		flag = true
 		return flag
-	} else if strings.Compare(in.Mail, "") != 0 {
+	} else if strings.Compare(in.Mail, "") == 0 {
 		flag = true
 		return flag
-	} else if strings.Compare(in.Rut, "") != 0 {
+	} else if strings.Compare(in.Rut, "") == 0 {
 		flag = true
 		return flag
-	} else if strings.Compare(in.Pass, "") != 0 {
+	} else if strings.Compare(in.Pass, "") == 0 {
 		flag = true
 		return flag
 	}

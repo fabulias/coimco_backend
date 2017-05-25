@@ -1,18 +1,19 @@
 package routes
 
 import (
+	"net/http"
+
 	"coimco_backend/auth"
 	"coimco_backend/model"
 	"github.com/gin-gonic/gin"
-	"log"
-	"net/http"
 )
 
+//This route generates the logic to enter in the application
 func Login(c *gin.Context) {
 	var in model.Login
-
-	if err := c.BindJSON(&in); err != nil {
-		checkErr(err, BindJson)
+	err := c.BindJSON(&in)
+	checkErr(err, BindJson)
+	if err != nil {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
@@ -21,11 +22,13 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
-	ret := model.LoginP(in)
+	//Check if 'in' exist in accounts with that
+	//mail and pass
+	acc, ret := model.LoginP(in)
 	if ret {
+		//Generate the token for this account
 		token, errT := auth.CreateToken(in.Mail)
 		if errT != nil {
-			log.Println(errT)
 			response := gin.H{
 				"status":  "error",
 				"data":    nil,
@@ -34,8 +37,15 @@ func Login(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, response)
 			return
 		}
+		//Account information
+		data := gin.H{
+			"name":     acc.Name,
+			"lastname": acc.Lastname,
+			"role":     acc.Role,
+		}
 		response := gin.H{
 			"status":  "success",
+			"data":    data,
 			"token":   token,
 			"message": LoginOK,
 		}

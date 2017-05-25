@@ -10,4 +10,5 @@ var (
 	LoginOK                 = "Mail and pass are correct, token it's OK"
 	LoginError              = "Mail or pass aren't correct"
 	TokenError              = "Error creating token"
+	ErrorHashPassword       = "Error hashing password"
 )
