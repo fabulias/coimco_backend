@@ -25,5 +25,4 @@ func checkSize(sample interface{}) bool {
 		}
 	}
 	return flag
-
 }
