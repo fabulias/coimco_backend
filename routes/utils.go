@@ -2,8 +2,16 @@ package routes
 
 import (
 	"coimco_backend/model"
+	"log"
 	"strings"
 )
+
+//Check error function
+func checkErr(err error, msg string) {
+	if err != nil {
+		log.Println(msg)
+	}
+}
 
 func checkSize(sample interface{}) bool {
 	var flag bool = false

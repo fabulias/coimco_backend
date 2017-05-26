@@ -1,20 +1,12 @@
 package routes
 
 import (
-	"log"
 	"net/http"
 
 	"coimco_backend/model"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
-
-//Check error function
-func checkErr(err error, msg string) {
-	if err != nil {
-		log.Println(msg)
-	}
-}
 
 var (
 	Limit         = "limit"

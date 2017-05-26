@@ -13,6 +13,15 @@ func CheckInCustomer(in Customer) bool {
 }
 
 //Return true in case of that all params are okay
+func CheckInProvider(in Provider) bool {
+	if strings.Compare(in.Name, "") != 0 && strings.Compare(in.Rut, "") != 0 && strings.Compare(in.Mail, "") != 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
+//Return true in case of that all params are okay
 func CheckInAccount(in User_acc) bool {
 	var flag bool = false
 	if strings.Compare(in.Name, "") == 0 {
