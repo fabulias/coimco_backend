@@ -2,12 +2,6 @@ package model
 
 import "strconv"
 
-var (
-	selectOneFailed = "Error selecting one row"
-	selectFailed    = "Error selecting rows"
-	countFailed     = "Error in select count"
-)
-
 //This function allow obtain customers' resource.
 func GetCustomers(limit, offset string) ([]Customer, string) {
 	var customers []Customer

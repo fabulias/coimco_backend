@@ -33,12 +33,12 @@ func main() {
 	// Global middleware
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	r.Use()
 
 	r.Use(Cors())
 	r.POST("/login", routes.Login)
 	// Simple group: v1
-	v1 := r.Group("api", auth.ValidateToken())
+	v1 := r.Group("api")
+	v1.Use(auth.ValidateToken())
 	{
 		//Methods plurals GET
 		v1.GET("/customers", routes.GetCustomers)

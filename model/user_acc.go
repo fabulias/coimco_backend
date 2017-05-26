@@ -1,12 +1,5 @@
 package model
 
-//Role type
-var (
-	AdminType       = 0
-	AcquirementType = 0
-	SellerType      = 1
-)
-
 //Represents base of the admin, acquirement manager
 //and seller in the application
 type User_acc struct {

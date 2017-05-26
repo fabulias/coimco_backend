@@ -47,62 +47,63 @@ func ValidateToken() gin.HandlerFunc {
 				"message": headerNotFound,
 			}
 			c.JSON(http.StatusBadRequest, response)
-			c.AbortWithStatus(http.StatusUnauthorized)
-		}
-		tokenArray := strings.Split(headerAuth[0], " ")
-		tokenString := tokenArray[1]
-		token, err := jwt.Parse(tokenString,
-			func(token *jwt.Token) (interface{}, error) {
-				// Validating the algorithm used
-				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-					return nil, unexpectedMethod
-				}
-				return mySigningKey, nil
-			})
-		//If parsing ending with error
-		if err != nil {
-			response := gin.H{
-				"status":  "error",
-				"data":    nil,
-				"message": err.Error(),
-			}
-			c.JSON(http.StatusUnauthorized, response)
-			c.AbortWithStatus(http.StatusUnauthorized)
+			c.AbortWithStatus(http.StatusBadRequest)
 		} else {
-			//Obtains data claims
-			if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-				expf, ok := claims["exp"].(float64)
-				exp := int64(expf)
-				//Obtaining the expiration time generates an error
-				if !ok {
-					response := gin.H{
-						"status":  "error",
-						"data":    nil,
-						"message": invalidTimeToken,
+			tokenArray := strings.Split(headerAuth[0], " ")
+			tokenString := tokenArray[1]
+			token, err := jwt.Parse(tokenString,
+				func(token *jwt.Token) (interface{}, error) {
+					// Validating the algorithm used
+					if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+						return nil, unexpectedMethod
 					}
-					c.JSON(http.StatusUnauthorized, response)
-				}
-				//Token time is expired
-				if exp < time.Now().Unix() {
-					response := gin.H{
-						"status":  "error",
-						"data":    nil,
-						"message": timeOutToken,
-					}
-					c.JSON(http.StatusUnauthorized, response)
-					c.Abort()
-				} else {
-					// Good case! :)
-					c.Next()
-				}
-			} else {
-				//Token creation error
+					return mySigningKey, nil
+				})
+			//If parsing ending with error
+			if err != nil {
 				response := gin.H{
 					"status":  "error",
 					"data":    nil,
-					"message": invalidToken,
+					"message": err.Error(),
 				}
 				c.JSON(http.StatusUnauthorized, response)
+				c.AbortWithStatus(http.StatusUnauthorized)
+			} else {
+				//Obtains data claims
+				if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+					expf, ok := claims["exp"].(float64)
+					exp := int64(expf)
+					//Obtaining the expiration time generates an error
+					if !ok {
+						response := gin.H{
+							"status":  "error",
+							"data":    nil,
+							"message": invalidTimeToken,
+						}
+						c.JSON(http.StatusUnauthorized, response)
+					}
+					//Token time is expired
+					if exp < time.Now().Unix() {
+						response := gin.H{
+							"status":  "error",
+							"data":    nil,
+							"message": timeOutToken,
+						}
+						c.JSON(http.StatusUnauthorized, response)
+						c.Abort()
+					} else {
+						// Good case! :)
+						c.Next()
+					}
+				} else {
+					//Token creation error
+					response := gin.H{
+						"status":  "error",
+						"data":    nil,
+						"message": invalidToken,
+					}
+					c.JSON(http.StatusUnauthorized, response)
+				}
 			}
 		}
 

@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"log"
 	"net/http"
 
 	"coimco_backend/hash"
@@ -37,7 +36,6 @@ func PostAccount(c *gin.Context) {
 		return
 	}
 	in.Pass = hash_pass
-	log.Println("in -> ", in)
 	account, flag := model.InsertAccount(&in)
 	//Flag is true if the model succeeds in inserting account
 	if flag {

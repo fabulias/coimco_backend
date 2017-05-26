@@ -27,4 +27,4 @@ _testmain.go
 *.DS_Store
 *.db
 *.model_test.go
-auth/private.go
+*/private.go
