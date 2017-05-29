@@ -2,31 +2,31 @@ package model
 
 import "strconv"
 
-//This function allow obtain providers' resource.
+//This function allow obtain provider' resource.
 func GetProviders(limit, offset string) ([]Provider, string) {
-	var providers []Provider
+	var provider []Provider
 	var count int64
 	//Here obtain total length of table.
-	count, err = dbmap.SelectInt("select count(*) from provider")
+	err = dbmap.Table("provider").Count(count).Error
 	checkErr(err, countFailed)
-	//Here obtain the providers previously selected.
-	_, err = dbmap.Select(&providers, "select * from provider limit $1 offset $2", limit, offset)
+	//Here obtain the provider previously selected.
+	err = dbmap.Offset(offset).Limit(limit).Find(&provider).Error
 	checkErr(err, selectFailed)
-	return providers, strconv.Itoa(int(count))
+	return provider, strconv.Itoa(int(count))
 }
 
 //This function allow obtain provider' resource for his id.
 func GetProvider(rut string) (Provider, error) {
 	var provider Provider
 	provider.Rut = rut
-	err := dbmap.SelectOne(&provider, "select * from provider where rut=$1", provider.Rut)
+	err = dbmap.First(&provider, provider.Rut).Error
 	checkErr(err, selectOneFailed)
 	return provider, err
 }
 
 //This function allow insert provider' resource
 func InsertProvider(in *Provider) (*Provider, bool) {
-	err = dbmap.Insert(in)
+	err = dbmap.Create(in).Error
 	if err != nil {
 		return in, false
 	} else {

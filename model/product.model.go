@@ -7,24 +7,24 @@ func GetProducts(limit, offset string) ([]Product, string) {
 	var products []Product
 	var count int64
 	//Here obtain total length of table.
-	count, err = dbmap.SelectInt("select count(*) from product")
-	checkErr(err, countFailed)
+	dbmap.Table("products").Count(count)
 	//Here obtain the products previously selected.
-	_, err = dbmap.Select(&products, "select * from product limit $1 offset $2", limit, offset)
-	checkErr(err, selectFailed)
+	dbmap.Limit(limit).Offset(offset).Find(&products)
 	return products, strconv.Itoa(int(count))
 }
 
 //This function allow obtain product' resource for his id.
-func GetProduct(product *Product) *Product {
-	err := dbmap.SelectOne(&product, "select * from product where id=$1", product.Id)
+func GetProduct(id uint) (Product, error) {
+	var product Product
+	product.ID = id
+	err := dbmap.First(&product, product.ID).Error
 	checkErr(err, selectOneFailed)
-	return product
+	return product, err
 }
 
 //This function allow insert product' resource
 func InsertProduct(in *Product) (*Product, bool) {
-	err = dbmap.Insert(in)
+	err = dbmap.Create(in).Error
 	if err != nil {
 		return in, false
 	} else {

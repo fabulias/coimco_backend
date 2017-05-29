@@ -49,11 +49,13 @@ func main() {
 		v1.GET("/customers/:rut", routes.GetCustomer)
 		v1.GET("/products/:id", routes.GetProduct)
 		v1.GET("/accounts/:mail", routes.GetAccount)
+		v1.GET("/tags/:id_customer")
 
 		//Methods POST
 		v1.POST("/customers", routes.PostCustomer)
 		v1.POST("/products", routes.PostProduct)
 		v1.POST("/accounts", routes.PostAccount)
+		v1.POST("/tags", routes.PostTag)
 	}
 	r.Run(":" + port)
 }

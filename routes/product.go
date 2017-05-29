@@ -4,8 +4,10 @@ import (
 	"coimco_backend/model"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
-	"log"
+
+	//"log"
 	"net/http"
+	"strconv"
 )
 
 //This route asking for products in a range, if not exists range,
@@ -38,13 +40,24 @@ func GetProducts(c *gin.Context) {
 }
 
 func GetProduct(c *gin.Context) {
-	mail := c.Param("mail")
-	if checkSize(mail) {
-		log.Println(mail)
-
+	id := c.Param("id")
+	id_str, _ := strconv.ParseUint(id, 10, 64)
+	product, err := model.GetProduct(uint(id_str))
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": GetMessageErrorSingular + " product with that ID",
+		}
+		c.JSON(http.StatusNotFound, response)
+	} else {
+		response := gin.H{
+			"status":  "success",
+			"data":    product,
+			"message": nil,
+		}
+		c.JSON(http.StatusOK, response)
 	}
-	var product *model.Product
-	model.GetProduct(product)
 }
 
 //This route insert a product in his table
@@ -81,5 +94,4 @@ func PostProduct(c *gin.Context) {
 		}
 		c.JSON(http.StatusBadRequest, response)
 	}
-
 }

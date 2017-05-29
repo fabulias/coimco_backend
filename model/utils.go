@@ -22,6 +22,15 @@ func CheckInProvider(in Provider) bool {
 }
 
 //Return true in case of that all params are okay
+func CheckInTag(in Tag) bool {
+	if strings.Compare(in.Name, "") != 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
+//Return true in case of that all params are okay
 func CheckInAccount(in User_acc) bool {
 	var flag bool = false
 	if strings.Compare(in.Name, "") == 0 {

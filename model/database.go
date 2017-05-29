@@ -1,39 +1,31 @@
 package model
 
 import (
-	"database/sql"
 	"log"
 
 	"coimco_backend/hash"
-	"github.com/kimxilxyong/gorp"
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	// _ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 var err error
 var dbmap = initDb()
 
 //Initialize database
-func initDb() *gorp.DbMap {
+func initDb() *gorm.DB {
 	// connect to db using standard Go database/sql API
 	// use whatever database/sql driver you wish
 	log.Println("Initialize database")
-	db, err := sql.Open("sqlite3", "local.db")
-	checkErr(err, "sql.Open failed")
-
-	// construct a gorp DbMap
-	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.SqliteDialect{}}
-	//return dbmap
-	// add a table, setting the table name to 'XXX' and
-	// specifying that the Id property is an auto incrementing PK
-	dbmap.AddTableWithName(Customer{}, "customer")
-	dbmap.AddTableWithName(Product{}, "product")
-	dbmap.AddTableWithName(Provider{}, "provider")
-	dbmap.AddTableWithName(User_acc{}, "user_acc")
-
-	// create the table. in a production system you'd generally
-	// use a migration tool, or create the tables via scripts
-	err = dbmap.CreateTablesIfNotExists()
-	checkErr(err, "Create tables failed")
+	db, err := gorm.Open("sqlite3", "local.db")
+	//LogMode is active
+	db.LogMode(true)
+	//defer db.Close()
+	if err != nil {
+		checkErr(err, err.Error())
+	}
+	db.SingularTable(true)
+	db.AutoMigrate(Customer{}, Provider{}, Product{}, User_acc{}, Tag_customer{}, Tag{})
 
 	//Create admin account
 	var in User_acc
@@ -45,9 +37,22 @@ func initDb() *gorp.DbMap {
 	in.Rut = Rut
 	in.Role = Role
 	in.Active = Active
-	err = dbmap.Insert(&in)
+	if db.NewRecord(in) {
+		db.Create(in)
+	}
 	if err != nil {
 		log.Println(ErrorAdminAccount)
 	}
-	return dbmap
+	return db
 }
+
+/*
+type Profile struct {
+    Refer int
+    Name  string
+}
+//Tag_customer
+type User struct {
+    Profile   Profile `gorm:"ForeignKey:ProfileID;AssociationForeignKey:Refer"`
+    ProfileID int
+}*/
