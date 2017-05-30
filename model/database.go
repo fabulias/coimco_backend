@@ -25,8 +25,8 @@ func initDb() *gorm.DB {
 		checkErr(err, err.Error())
 	}
 	db.SingularTable(true)
-	db.AutoMigrate(Customer{}, Provider{}, Product{}, User_acc{}, Tag_customer{}, Tag{})
-
+	db.AutoMigrate(Customer{}, Provider{}, Product{}, User_acc{}, Tag{}, Tag_customer{})
+	//db.Model(&Tag_customer{}).AddForeignKey("CustomerID", "tag(id)", "RESTRICT", "RESTRICT")
 	//Create admin account
 	var in User_acc
 	in.Name = Name
@@ -45,14 +45,3 @@ func initDb() *gorm.DB {
 	}
 	return db
 }
-
-/*
-type Profile struct {
-    Refer int
-    Name  string
-}
-//Tag_customer
-type User struct {
-    Profile   Profile `gorm:"ForeignKey:ProfileID;AssociationForeignKey:Refer"`
-    ProfileID int
-}*/

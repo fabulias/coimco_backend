@@ -33,6 +33,24 @@
 			"revisionTime": "2016-09-26T18:56:24Z"
 		},
 		{
+			"checksumSHA1": "hA3pKaCPscFk4oqNUPUTYJrm14w=",
+			"path": "github.com/jinzhu/gorm",
+			"revision": "9acaa33324bbcc78239a1c913d4f1292c12177b9",
+			"revisionTime": "2017-05-04T14:08:37Z"
+		},
+		{
+			"checksumSHA1": "4VZ1gLZHMumRjV3fclS1aX8S1aQ=",
+			"path": "github.com/jinzhu/gorm/dialects/sqlite",
+			"revision": "9acaa33324bbcc78239a1c913d4f1292c12177b9",
+			"revisionTime": "2017-05-04T14:08:37Z"
+		},
+		{
+			"checksumSHA1": "VIp1lZm6joWhlNdwhady8u//qRw=",
+			"path": "github.com/jinzhu/inflection",
+			"revision": "1c35d901db3da928c72a72d8458480cc9ade058f",
+			"revisionTime": "2017-01-02T12:52:26Z"
+		},
+		{
 			"checksumSHA1": "yWFXNGs4/Dpef1SgoPCVhoPctyk=",
 			"path": "github.com/kimxilxyong/gorp",
 			"revision": "df76af50634bdd7f26d44b262d5504249cb89d87",
@@ -57,10 +75,10 @@
 			"revisionTime": "2016-01-26T18:01:36Z"
 		},
 		{
-			"checksumSHA1": "6ZV/m7lRaCJMopHqHHjmcOy9s2A=",
+			"checksumSHA1": "bkkGN70qZCy8YaN89dqB1fONZJU=",
 			"path": "github.com/mattn/go-sqlite3",
-			"revision": "cf7286f069c3ef596efcc87781a4653a2e7607bd",
-			"revisionTime": "2017-04-07T15:46:27Z"
+			"revision": "83772a7051f5e30d8e59746a9e43dfa706b72f3b",
+			"revisionTime": "2017-05-29T14:59:28Z"
 		},
 		{
 			"checksumSHA1": "UWjVYmoHlIfHzVIskELHiJQtMOI=",
@@ -75,10 +93,10 @@
 			"revisionTime": "2017-05-16T03:11:29Z"
 		},
 		{
-			"checksumSHA1": "9jjO5GjLa0XF/nfWihF02RoH4qc=",
+			"checksumSHA1": "Y+HGqEkYM15ir+J93MEaHdyFy0c=",
 			"path": "golang.org/x/net/context",
-			"revision": "ed0556cc888129faa06ff0ef3c65e0ce59c8b75c",
-			"revisionTime": "2016-09-29T06:24:16Z"
+			"revision": "3da985ce5951d99de868be4385f21ea6c2b22f24",
+			"revisionTime": "2017-05-27T09:53:06Z"
 		},
 		{
 			"checksumSHA1": "39V1idWER42Lmcmg2Uy40wMzOlo=",
