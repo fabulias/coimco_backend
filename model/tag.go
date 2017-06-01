@@ -3,7 +3,7 @@ package model
 import "time"
 
 type Tag struct {
-	ID   uint   `gorm:"primary_key" json:"id"`
+	ID   uint   `json:"id"`
 	Name string `json:"name", db:"name:name" binding:"required"`
 
 	CreatedAt time.Time

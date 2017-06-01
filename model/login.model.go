@@ -3,7 +3,7 @@ package model
 import "coimco_backend/hash"
 
 //This function allow sign in an account
-func LoginP(in Login) (User_acc, bool) {
+func LoginP(in Login) (UserAcc, bool) {
 	user_acc, err := GetAccount(in.Mail)
 	//If the account exists
 	if err == nil {

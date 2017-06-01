@@ -31,7 +31,7 @@ func CheckInTag(in Tag) bool {
 }
 
 //Return true in case of that all params are okay
-func CheckInAccount(in User_acc) bool {
+func CheckInAccount(in UserAcc) bool {
 	var flag bool = false
 	if strings.Compare(in.Name, "") == 0 {
 		flag = true

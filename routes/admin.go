@@ -10,7 +10,7 @@ import (
 
 //This route insert an account in user_acc table
 func PostAccount(c *gin.Context) {
-	var in model.User_acc
+	var in model.UserAcc
 	err := c.BindJSON(&in)
 	checkErr(err, BindJson)
 	if model.CheckInAccount(in) {
