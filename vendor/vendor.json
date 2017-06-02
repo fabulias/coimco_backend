@@ -39,6 +39,12 @@
 			"revisionTime": "2017-05-04T14:08:37Z"
 		},
 		{
+			"checksumSHA1": "QmQW8snORAputB7/1jFXpsOZa8A=",
+			"path": "github.com/jinzhu/gorm/dialects/postgres",
+			"revision": "9acaa33324bbcc78239a1c913d4f1292c12177b9",
+			"revisionTime": "2017-05-04T14:08:37Z"
+		},
+		{
 			"checksumSHA1": "4VZ1gLZHMumRjV3fclS1aX8S1aQ=",
 			"path": "github.com/jinzhu/gorm/dialects/sqlite",
 			"revision": "9acaa33324bbcc78239a1c913d4f1292c12177b9",
@@ -57,16 +63,22 @@
 			"revisionTime": "2015-12-19T00:05:18Z"
 		},
 		{
-			"checksumSHA1": "dNYxHiBLalTqluak2/Z8c3RsSEM=",
+			"checksumSHA1": "j5SD2BLKDdDw0urAd0+XndJrXXg=",
 			"path": "github.com/lib/pq",
-			"revision": "50761b0867bd1d9d069276790bcd4a3bccf2324a",
-			"revisionTime": "2016-08-31T22:25:20Z"
+			"revision": "91f10e40ba0dd2d0bf9f93ec1d4077711a78df88",
+			"revisionTime": "2017-05-30T21:32:02Z"
 		},
 		{
-			"checksumSHA1": "xppHi82MLqVx1eyQmbhTesAEjx8=",
+			"checksumSHA1": "jaCQF1par6Jl8g+V2Cgp0n/0wSc=",
+			"path": "github.com/lib/pq/hstore",
+			"revision": "91f10e40ba0dd2d0bf9f93ec1d4077711a78df88",
+			"revisionTime": "2017-05-30T21:32:02Z"
+		},
+		{
+			"checksumSHA1": "Gk3jTNQ5uGDUE0WMJFWcYz9PMps=",
 			"path": "github.com/lib/pq/oid",
-			"revision": "50761b0867bd1d9d069276790bcd4a3bccf2324a",
-			"revisionTime": "2016-08-31T22:25:20Z"
+			"revision": "91f10e40ba0dd2d0bf9f93ec1d4077711a78df88",
+			"revisionTime": "2017-05-30T21:32:02Z"
 		},
 		{
 			"checksumSHA1": "b0T0Hzd+zYk+OCDTFMps+jwa/nY=",
