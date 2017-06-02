@@ -16,7 +16,7 @@ func PostTag(c *gin.Context) {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
-			"message": PostMessageErrorParams,
+			"message": ErrorParams,
 		}
 		c.JSON(http.StatusBadRequest, response)
 		return

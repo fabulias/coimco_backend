@@ -36,7 +36,7 @@ func CreateToken(mail string) (string, error) {
 //This Middleware function,
 //it has the purpose of validate a token to access to API
 func ValidateToken() gin.HandlerFunc {
-	log.Println("Validator JWT listening")
+	log.Println("Validator JWT Middleware")
 	return func(c *gin.Context) {
 		//Parsing header request
 		headerAuth := c.Request.Header["Authorization"]

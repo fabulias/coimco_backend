@@ -15,7 +15,7 @@ func checkErr(err error, msg string) {
 }
 
 func Cors() gin.HandlerFunc {
-	log.Println("CORS header")
+	log.Println("CORS Middleware")
 	return func(c *gin.Context) {
 		c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
 		c.Next()
@@ -50,12 +50,17 @@ func main() {
 		v1.GET("/products/:id", routes.GetProduct)
 		v1.GET("/accounts/:mail", routes.GetAccount)
 		v1.GET("/tags/:id_customer")
+		v1.GET("/sale_detail/:sale_id/:product_id", routes.GetSaleDetail)
+		v1.GET("/purchase_detail/:purchase_id/:product_id", routes.GetPurchaseDetail)
 
 		//Methods POST
 		v1.POST("/customers", routes.PostCustomer)
 		v1.POST("/products", routes.PostProduct)
 		v1.POST("/accounts", routes.PostAccount)
 		v1.POST("/tags", routes.PostTag)
+		v1.POST("/sale_detail", routes.PostSaleDetail)
+		v1.POST("/purchase_detail", routes.PostPurchaseDetail)
+
 	}
 	r.Run(":" + port)
 }

@@ -5,7 +5,7 @@ var (
 	GetMessageErrorPlural   = "There are no"
 	GetMessageErrorSingular = "There is not"
 	PostMessageError        = "Error inserting"
-	PostMessageErrorParams  = "Error in query params"
+	ErrorParams             = "Error in query params"
 	BindJson                = "Error binding json"
 	LoginOK                 = "Mail and pass are correct, token it's OK"
 	LoginError              = "Mail or pass aren't correct"

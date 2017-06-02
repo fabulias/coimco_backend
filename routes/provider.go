@@ -5,7 +5,6 @@ import (
 
 	"coimco_backend/model"
 	"github.com/gin-gonic/gin"
-	_ "github.com/lib/pq"
 )
 
 //This route asking for providers in a range, if not exists range,
@@ -68,7 +67,7 @@ func PostProvider(c *gin.Context) {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
-			"message": PostMessageErrorParams,
+			"message": ErrorParams,
 		}
 		c.JSON(http.StatusBadRequest, response)
 		return
