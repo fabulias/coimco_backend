@@ -6,6 +6,7 @@ import (
 	"coimco_backend/hash"
 	"coimco_backend/model"
 	"github.com/gin-gonic/gin"
+	_ "github.com/lib/pq"
 )
 
 //This route insert an account in user_acc table

@@ -20,7 +20,7 @@ func initDb() *gorm.DB {
 	db, err := gorm.Open("postgres", "postgres://losaieljggcviq:94c6c9315e714fab"+
 		"5415ed1be76d4a2037881447b75770f62842d5ff4a0f1dac@ec2-107-22-244-62."+
 		"compute-1.amazonaws.com:5432/d2pkqjvdn5eiha")
-
+	//db, err := gorm.Open("sqlite3", "local.db")
 	//LogMode is active
 	db.LogMode(true)
 	//defer db.Close()
@@ -65,9 +65,9 @@ func initDb() *gorm.DB {
 	in.Rut = Rut
 	in.Role = Role
 	in.Active = Active
-	if db.NewRecord(in) {
-		db.Create(in)
-	}
+
+	db.FirstOrCreate(&in)
+
 	if err != nil {
 		log.Println(ErrorAdminAccount)
 	}
