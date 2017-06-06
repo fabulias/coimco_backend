@@ -58,7 +58,7 @@ func ValidateToken() gin.HandlerFunc {
 					if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 						return nil, unexpectedMethod
 					}
-					return mySigningKey, nil
+					return os.Getenv("MY_SIGN"), nil
 				})
 			//If parsing ending with error
 			if err != nil {
