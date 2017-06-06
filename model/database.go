@@ -67,7 +67,7 @@ func initDb() *gorm.DB {
 	in.Rut = os.Getenv("RUT")
 	role, _ := strconv.ParseInt(os.Getenv("ROLE"), 10, 8)
 	in.Role = int8(role)
-	in.Active = Active
+	in.Active = true
 
 	db.FirstOrCreate(&in)
 
