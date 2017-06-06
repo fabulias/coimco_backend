@@ -12,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//Declaring errors and error messages
+//Declaring messages and error messages
 var (
 	unexpectedMethod = errors.New("Unexpected signing method")
 	invalidTimeToken = "Token time invalid"
