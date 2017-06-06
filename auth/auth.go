@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//Declaring errors and errors messages
+//Declaring errors and error messages
 var (
 	unexpectedMethod = errors.New("Unexpected signing method")
 	invalidTimeToken = "Token time invalid"
@@ -30,7 +31,7 @@ func CreateToken(mail string) (string, error) {
 	claims["iat"] = time.Now().Unix()
 	//Adding 30 days to expiration time
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 30).Unix()
-	return token.SignedString(mySigningKey)
+	return token.SignedString(os.Getenv("MY_SIGN"))
 }
 
 //This Middleware function,

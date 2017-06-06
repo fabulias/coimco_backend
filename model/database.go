@@ -2,10 +2,11 @@ package model
 
 import (
 	"log"
+	"os"
+	"strconv"
 
 	"coimco_backend/hash"
 	"github.com/jinzhu/gorm"
-	// _ "github.com/jinzhu/gorm/dialects/sqlite"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
@@ -17,9 +18,10 @@ func initDb() *gorm.DB {
 	// connect to db using standard Go database/sql API
 	// use whatever database/sql driver you wish
 	log.Println("Initialize database")
-	db, err := gorm.Open("postgres", "postgres://losaieljggcviq:94c6c9315e714fab"+
-		"5415ed1be76d4a2037881447b75770f62842d5ff4a0f1dac@ec2-107-22-244-62."+
-		"compute-1.amazonaws.com:5432/d2pkqjvdn5eiha")
+	db, err := gorm.Open("postgres", os.Getenv("DATABASE_URL"))
+	//"postgres://losaieljggcviq:94c6c9315e714fab"+
+	//"5415ed1be76d4a2037881447b75770f62842d5ff4a0f1dac@ec2-107-22-244-62."+
+	//"compute-1.amazonaws.com:5432/d2pkqjvdn5eiha")
 	//db, err := gorm.Open("sqlite3", "local.db")
 	//LogMode is active
 	db.LogMode(true)
@@ -57,13 +59,14 @@ func initDb() *gorm.DB {
 
 	//Create admin account
 	var in UserAcc
-	in.Name = Name
-	in.Lastname = Lastname
-	in.Mail = Mail
-	hash_pass, _ := hash.HashPassword(Pass)
+	in.Name = os.Getenv("NAME")
+	in.Lastname = os.Getenv("LASTNAME")
+	in.Mail = os.Getenv("MAIL")
+	hash_pass, _ := hash.HashPassword(os.Getenv("PASSWORD"))
 	in.Pass = hash_pass
-	in.Rut = Rut
-	in.Role = Role
+	in.Rut = os.Getenv("RUT")
+	role, _ := strconv.ParseInt(os.Getenv("ROLE"), 10, 8)
+	in.Role = int8(role)
 	in.Active = Active
 
 	db.FirstOrCreate(&in)
