@@ -1,10 +1,9 @@
 package model
 
 //This function allow insert account
-func InsertAccount(in *UserAcc) (*UserAcc, bool) {
-	dbmap.Create(in)
-	flag := dbmap.NewRecord(in)
-	return in, !flag
+func InsertAccount(in *UserAcc) (*UserAcc, error) {
+	err = dbmap.Create(in).Error
+	return in, err
 }
 
 //This function allow obtain account' resource for his mail.

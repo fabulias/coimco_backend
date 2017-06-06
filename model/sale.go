@@ -1,10 +1,11 @@
 package model
 
 import "time"
+import "github.com/jinzhu/gorm"
 
 type Sale struct {
-	ID         uint      `json:"id"`
-	CustomerID string    `json:"id_customer"`
-	UserID     string    `json:"id_user"`
-	Date       time.Time `json:"date"`
+	gorm.Model
+	CustomerID string    `json:"id_customer" binding:"required"`
+	UserID     string    `json:"id_user" binding:"required"`
+	Date       time.Time `json:"date" binding:"required"`
 }

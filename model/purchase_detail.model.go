@@ -4,8 +4,9 @@ func GetPurchaseDetail(purchase_id, product_id uint) (PurchaseDetail, error) {
 	var purchase_detail PurchaseDetail
 	purchase_detail.PurchaseID = purchase_id
 	purchase_detail.ProductID = product_id
-	err = dbmap.First(&purchase_detail, purchase_detail.PurchaseID,
-		purchase_detail.ProductID).Error
+	err = dbmap.Where("purchase_id = $1 AND product_id = $2",
+		purchase_detail.PurchaseID,
+		purchase_detail.ProductID).First(&purchase_detail).Error
 	checkErr(err, selectOneFailed)
 	return purchase_detail, err
 }

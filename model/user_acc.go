@@ -8,7 +8,7 @@ var (
 	SELLER  int8 = 0
 )
 
-//Represents base of the admin, acquirement manager
+//Represents, base of the admin, acquirement manager
 //and seller in the application
 type UserAcc struct {
 	Mail     string `json:"mail" binding:"required" gorm:"primary_key"`

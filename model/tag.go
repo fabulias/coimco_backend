@@ -1,12 +1,8 @@
 package model
 
-import "time"
+import "github.com/jinzhu/gorm"
 
 type Tag struct {
-	ID   uint   `json:"id"`
-	Name string `json:"name", db:"name:name" binding:"required"`
-
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time
+	gorm.Model
+	Name string `json:"name" binding:"required"`
 }

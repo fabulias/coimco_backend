@@ -9,3 +9,11 @@ func InsertTag(in *Tag) (*Tag, bool) {
 		return in, true
 	}
 }
+
+func GetTag(id uint) (Tag, error) {
+	var tag Tag
+	tag.ID = id
+	err = dbmap.First(&tag, tag.ID).Error
+	checkErr(err, selectOneFailed)
+	return tag, err
+}

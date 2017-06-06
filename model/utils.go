@@ -21,9 +21,35 @@ func CheckInProvider(in Provider) bool {
 	}
 }
 
+func CheckInPurchaseDetail(in PurchaseDetail) bool {
+	if in.PurchaseID < 1 {
+		return false
+	} else if in.ProductID < 1 {
+		return false
+	} else if in.Price < 1 {
+		return false
+	} else if in.Quantity < 1 {
+		return false
+	}
+	return true
+}
+
+func CheckInSaleDetail(in SaleDetail) bool {
+	if in.SaleID < 1 {
+		return false
+	} else if in.ProductID < 1 {
+		return false
+	} else if in.Price < 1 {
+		return false
+	} else if in.Quantity < 1 {
+		return false
+	}
+	return true
+}
+
 //Return true in case of that all params are okay
 func CheckInTag(in Tag) bool {
-	if strings.Compare(in.Name, "") != 0 {
+	if strings.Compare(in.Name, "") == 0 {
 		return true
 	} else {
 		return false

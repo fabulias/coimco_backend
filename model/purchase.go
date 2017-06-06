@@ -1,10 +1,11 @@
 package model
 
 import "time"
+import "github.com/jinzhu/gorm"
 
 type Purchase struct {
-	ID         uint      `json:"id"`
-	ProviderID string    `json:"id_customer"`
-	Date       time.Time `json:"date"`
-	ShipTime   time.Time `json:"shiptime"`
+	gorm.Model
+	ProviderID string    `json:"id_customer" binding:"required"`
+	Date       time.Time `json:"date" binding:"required"`
+	ShipTime   time.Time `json:"shiptime" binding:"required"`
 }

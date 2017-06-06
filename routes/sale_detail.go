@@ -44,7 +44,7 @@ func PostSaleDetail(c *gin.Context) {
 	var in model.SaleDetail
 	err := c.BindJSON(&in)
 	checkErr(err, BindJson)
-	if err != nil {
+	if err != nil || !model.CheckInSaleDetail(in) {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,

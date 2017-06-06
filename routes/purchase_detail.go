@@ -44,7 +44,7 @@ func PostPurchaseDetail(c *gin.Context) {
 	var in model.PurchaseDetail
 	err := c.BindJSON(&in)
 	checkErr(err, BindJson)
-	if err != nil {
+	if err != nil || !model.CheckInPurchaseDetail(in) {
 		response := gin.H{
 			"status":  "error",
 			"data":    nil,
