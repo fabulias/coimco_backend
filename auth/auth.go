@@ -31,7 +31,7 @@ func CreateToken(mail string) (string, error) {
 	claims["iat"] = time.Now().Unix()
 	//Adding 30 days to expiration time
 	claims["exp"] = time.Now().Add(time.Hour * 24 * 30).Unix()
-	return token.SignedString(os.Getenv("MY_SIGN"))
+	return token.SignedString([]byte(os.Getenv("MY_SIGN")))
 }
 
 //This Middleware function,
@@ -58,7 +58,7 @@ func ValidateToken() gin.HandlerFunc {
 					if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 						return nil, unexpectedMethod
 					}
-					return os.Getenv("MY_SIGN"), nil
+					return []byte(os.Getenv("MY_SIGN")), nil
 				})
 			//If parsing ending with error
 			if err != nil {
