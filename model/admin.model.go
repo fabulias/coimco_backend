@@ -10,6 +10,6 @@ func InsertAccount(in *UserAcc) (*UserAcc, error) {
 func GetAccount(mail string) (UserAcc, error) {
 	var account UserAcc
 	account.Mail = mail
-	err = dbmap.First(&account, account.Rut).Error
+	err = dbmap.First(&account, account.Mail).Error
 	return account, err
 }
