@@ -47,6 +47,14 @@ func CheckInSaleDetail(in SaleDetail) bool {
 	return true
 }
 
+func CheckInTagCustomer(in TagCustomer) bool {
+	if in.TagID < 0 || strings.Compare(in.CustomerID, "") == 0 {
+		return true
+	} else {
+		return false
+	}
+}
+
 //Return true in case of that all params are okay
 func CheckInTag(in Tag) bool {
 	if strings.Compare(in.Name, "") == 0 {

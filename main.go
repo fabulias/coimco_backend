@@ -67,6 +67,7 @@ func main() {
 		v1.POST("/purchase_detail", routes.PostPurchaseDetail)
 		v1.POST("/sales", routes.PostSale)
 		v1.POST("/purchases", routes.PostPurchase)
+		v1.POST("tags_customer")
 	}
 	r.Run(":" + port)
 }
