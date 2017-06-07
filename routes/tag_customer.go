@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/fabulias/coimco_backend/model"
@@ -11,6 +12,7 @@ func PostTagCustomer(c *gin.Context) {
 	var in model.TagCustomer
 	err := c.BindJSON(&in)
 	checkErr(err, BindJson)
+	log.Println("in-> ", in)
 	//Check if tag parameters are valid
 	if model.CheckInTagCustomer(in) {
 		response := gin.H{
