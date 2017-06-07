@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"coimco_backend/model"
+	"github.com/fabulias/coimco_backend/model"
 	"github.com/gin-gonic/gin"
 )
 

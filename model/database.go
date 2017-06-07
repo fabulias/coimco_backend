@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"coimco_backend/hash"
+	"github.com/fabulias/coimco_backend/hash"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )

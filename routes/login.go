@@ -1,10 +1,11 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 
-	"coimco_backend/auth"
-	"coimco_backend/model"
+	"github.com/fabulias/coimco_backend/auth"
+	"github.com/fabulias/coimco_backend/model"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,6 +25,7 @@ func Login(c *gin.Context) {
 	}
 	//Check if 'in' exist in accounts with that
 	//mail and pass
+	log.Println("in -> ", in)
 	acc, ret := model.LoginP(in)
 	if ret {
 		//Generate the token for this account

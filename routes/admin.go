@@ -3,8 +3,8 @@ package routes
 import (
 	"net/http"
 
-	"coimco_backend/hash"
-	"coimco_backend/model"
+	"github.com/fabulias/coimco_backend/hash"
+	"github.com/fabulias/coimco_backend/model"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
