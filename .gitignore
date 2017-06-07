@@ -28,3 +28,5 @@ _testmain.go
 *.db
 *.model_test.go
 */private.go
+
+API.txt
