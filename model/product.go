@@ -7,7 +7,6 @@ type Product struct {
 	gorm.Model
 	Name     string `json:"name" binding:"required"`
 	Details  string `json:"details" binding:"required"`
-	Stock    int    `json:"stock" binding:"required"`
 	Brand    string `json:"brand" binding:"required"`
 	Category string `json:"category" binding:"required"`
 }

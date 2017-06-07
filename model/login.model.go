@@ -1,6 +1,6 @@
 package model
 
-import "coimco_backend/hash"
+import "github.com/fabulias/coimco_backend/hash"
 
 //This function allow sign in an account
 func LoginP(in Login) (UserAcc, bool) {

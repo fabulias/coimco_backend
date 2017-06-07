@@ -98,9 +98,6 @@ func CheckInProduct(in Product) bool {
 	} else if strings.Compare(in.Details, "") != 0 {
 		flag = true
 		return flag
-	} else if in.Stock < 0 {
-		flag = true
-		return flag
 	} else if strings.Compare(in.Brand, "") != 0 {
 		flag = true
 		return flag

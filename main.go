@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"coimco_backend/auth"
-	"coimco_backend/routes"
+	"github.com/fabulias/coimco_backend/auth"
+	"github.com/fabulias/coimco_backend/routes"
 	"github.com/gin-gonic/gin"
 )
 

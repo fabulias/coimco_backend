@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"coimco_backend/model"
+	"github.com/fabulias/coimco_backend/model"
 	"log"
 	"strings"
 )
