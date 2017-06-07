@@ -19,7 +19,9 @@ func GetCustomers(limit, offset string) ([]Customer, string) {
 func GetCustomer(rut string) (Customer, error) {
 	var customer Customer
 	customer.Rut = rut
-	err = dbmap.First(&customer, customer.Rut).Error
+	err := dbmap.Where("rut=?", rut).First(&customer).Error
+	//err := dbmap.First(&customer, customer.Rut).Error
+	//log.Println(err.Error())
 	checkErr(err, selectOneFailed)
 	return customer, err
 }

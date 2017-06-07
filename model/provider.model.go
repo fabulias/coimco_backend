@@ -19,7 +19,7 @@ func GetProviders(limit, offset string) ([]Provider, string) {
 func GetProvider(rut string) (Provider, error) {
 	var provider Provider
 	provider.Rut = rut
-	err = dbmap.First(&provider, provider.Rut).Error
+	err := dbmap.Where("rut=?", rut).First(&provider).Error
 	checkErr(err, selectOneFailed)
 	return provider, err
 }

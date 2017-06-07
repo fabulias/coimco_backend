@@ -39,7 +39,7 @@ func PostAccount(c *gin.Context) {
 	in.Pass = hash_pass
 	account, err := model.InsertAccount(&in)
 	//Flag is true if the model succeeds in inserting account
-	if err != nil {
+	if err == nil {
 		response := gin.H{
 			"status":  "success",
 			"data":    account,
