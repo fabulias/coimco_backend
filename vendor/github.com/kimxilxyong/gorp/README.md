@@ -60,9 +60,9 @@ type Post struct {
 	Comments  []*Comment `db:"relation:PostId"` 
 	// will create a table Comments as a detail table with foreignkey PostId
 	// If you want a different name just issue a: 
-	// Dbmap.AddTableWithName(post.Comment{}, "comments_embedded_test")
-	// after: Dbmap.AddTableWithName(post.Post{}, "posts_embedded_test")
-	// but before: Dbmap.CreateTablesIfNotExists()
+	// dbmap.AddTableWithName(post.Comment{}, "comments_embedded_test")
+	// after: dbmap.AddTableWithName(post.Post{}, "posts_embedded_test")
+	// but before: dbmap.CreateTablesIfNotExists()
 }
 
 // holds a single comment bound to a post - this is the detail/child struct
@@ -87,16 +87,16 @@ for i < 10 {
 	    x++
 	}
 	// Inserting a post also inserts all its detail records (=comments)
-	err = Dbmap.InsertWithChilds(&p)
+	err = dbmap.InsertWithChilds(&p)
 	
 	// Modify some stuff
 	for y, c := range p.Comments {
 		c.Title = fmt.Sprintf("UpdatedComment %d ", y) + c.Title
 		x++
 	}	
-	rowsaffected, err = Dbmap.UpdateWithChilds(&p)
+	rowsaffected, err = dbmap.UpdateWithChilds(&p)
 		
-	res, err := Dbmap.GetWithChilds(post.Post{}, PrimaryKey)
+	res, err := dbmap.GetWithChilds(post.Post{}, PrimaryKey)
 	resp := res.(*post.Post)
 }
 ```
@@ -221,11 +221,11 @@ import (
 
 func main() {
     // initialize the DbMap
-    Dbmap := initDb()
-    defer Dbmap.Db.Close()
+    dbmap := initDb()
+    defer dbmap.Db.Close()
 
     // delete any existing rows
-    err := Dbmap.TruncateTables()
+    err := dbmap.TruncateTables()
     checkErr(err, "TruncateTables failed")
 
     // create two posts
@@ -233,17 +233,17 @@ func main() {
     p2 := newPost("Go 1.2 released!", "Lorem ipsum lorem ipsum")
 
     // insert rows - auto increment PKs will be set properly after the insert
-    err = Dbmap.Insert(&p1, &p2)
+    err = dbmap.Insert(&p1, &p2)
     checkErr(err, "Insert failed")
 
     // use convenience SelectInt
-    count, err := Dbmap.SelectInt("select count(*) from posts")
+    count, err := dbmap.SelectInt("select count(*) from posts")
     checkErr(err, "select count(*) failed")
     log.Println("Rows after inserting:", count)
 
     // update a row
     p2.Title = "Go 1.2 is better than ever"
-    count, err = Dbmap.Update(&p2)
+    count, err = dbmap.Update(&p2)
     checkErr(err, "Update failed")
     log.Println("Rows updated:", count)
 
@@ -252,13 +252,13 @@ func main() {
     // Postgres users should use $1 instead of ? placeholders
     // See 'Known Issues' below
     //
-    err = Dbmap.SelectOne(&p2, "select * from posts where post_id=?", p2.Id)
+    err = dbmap.SelectOne(&p2, "select * from posts where post_id=?", p2.Id)
     checkErr(err, "SelectOne failed")
     log.Println("p2 row:", p2)
 
     // fetch all rows
     var posts []Post
-    _, err = Dbmap.Select(&posts, "select * from posts order by post_id")
+    _, err = dbmap.Select(&posts, "select * from posts order by post_id")
     checkErr(err, "Select failed")
     log.Println("All rows:")
     for x, p := range posts {
@@ -266,16 +266,16 @@ func main() {
     }
 
     // delete row by PK
-    count, err = Dbmap.Delete(&p1)
+    count, err = dbmap.Delete(&p1)
     checkErr(err, "Delete failed")
     log.Println("Rows deleted:", count)
 
     // delete row manually via Exec
-    _, err = Dbmap.Exec("delete from posts where post_id=?", p2.Id)
+    _, err = dbmap.Exec("delete from posts where post_id=?", p2.Id)
     checkErr(err, "Exec failed")
 
     // confirm count is zero
-    count, err = Dbmap.SelectInt("select count(*) from posts")
+    count, err = dbmap.SelectInt("select count(*) from posts")
     checkErr(err, "select count(*) failed")
     log.Println("Row count - should be zero:", count)
 
@@ -305,18 +305,18 @@ func initDb() *gorp.DbMap {
     checkErr(err, "sql.Open failed")
 
     // construct a gorp DbMap
-    Dbmap := &gorp.DbMap{Db: db, Dialect: gorp.SqliteDialect{}}
+    dbmap := &gorp.DbMap{Db: db, Dialect: gorp.SqliteDialect{}}
 
     // add a table, setting the table name to 'posts' and
     // specifying that the Id property is an auto incrementing PK
-    Dbmap.AddTableWithName(Post{}, "posts").SetKeys(true, "Id")
+    dbmap.AddTableWithName(Post{}, "posts").SetKeys(true, "Id")
 
     // create the table. in a production system you'd generally
     // use a migration tool, or create the tables via scripts
-    err = Dbmap.CreateTablesIfNotExists()
+    err = dbmap.CreateTablesIfNotExists()
     checkErr(err, "Create tables failed")
 
-    return Dbmap
+    return dbmap
 }
 
 func checkErr(err error, msg string) {
@@ -357,7 +357,7 @@ type Person struct {
 //
 // This is equivalent to using the ColMap methods:
 //
-//   table := Dbmap.AddTableWithName(Product{}, "product")
+//   table := dbmap.AddTableWithName(Product{}, "product")
 //   table.ColMap("Id").Rename("product_id")
 //   table.ColMap("Price").Rename("unit_price")
 //   table.ColMap("IgnoreMe").SetTransient(true)
@@ -379,18 +379,18 @@ Then create a mapper, typically you'd do this one time at app startup:
 db, err := sql.Open("mymysql", "tcp:localhost:3306*mydb/myuser/mypassword")
 
 // construct a gorp DbMap
-Dbmap := &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
+dbmap := &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
 
 // register the structs you wish to use with gorp
-// you can also use the shorter Dbmap.AddTable() if you
+// you can also use the shorter dbmap.AddTable() if you
 // don't want to override the table name
 //
 // SetKeys(true) means we have a auto increment primary key, which
 // will get automatically bound to your struct post-insert
 //
-t1 := Dbmap.AddTableWithName(Invoice{}, "invoice_test").SetKeys(true, "Id")
-t2 := Dbmap.AddTableWithName(Person{}, "person_test").SetKeys(true, "Id")
-t3 := Dbmap.AddTableWithName(Product{}, "product_test").SetKeys(true, "Id")
+t1 := dbmap.AddTableWithName(Invoice{}, "invoice_test").SetKeys(true, "Id")
+t2 := dbmap.AddTableWithName(Person{}, "person_test").SetKeys(true, "Id")
+t3 := dbmap.AddTableWithName(Product{}, "product_test").SetKeys(true, "Id")
 <<<<<<< HEAD
 
 =======
@@ -412,7 +412,7 @@ type WithEmbeddedStruct struct {
 }
 
 es := &WithEmbeddedStruct{-1, Names{FirstName: "Alice", LastName: "Smith"}}
-err := Dbmap.Insert(es)
+err := dbmap.Insert(es)
 ```
 
 See the `TestWithEmbeddedStruct` function in `gorp_test.go` for a full example.
@@ -425,14 +425,14 @@ or with a separate migration tool (like [goose](https://bitbucket.org/liamstask/
 
 ```go
 // create all registered tables
-Dbmap.CreateTables()
+dbmap.CreateTables()
 
 // same as above, but uses "if not exists" clause to skip tables that are
 // already defined
-Dbmap.CreateTablesIfNotExists()
+dbmap.CreateTablesIfNotExists()
 
 // drop
-Dbmap.DropTables()
+dbmap.DropTables()
 ```
 
 ### SQL Logging
@@ -448,10 +448,10 @@ as `glog` if you want more control over how statements are logged.
 ```go
 // Will log all SQL statements + args as they are run
 // The first arg is a string prefix to prepend to all log messages
-Dbmap.TraceOn("[gorp]", log.New(os.Stdout, "myapp:", log.Lmicroseconds))
+dbmap.TraceOn("[gorp]", log.New(os.Stdout, "myapp:", log.Lmicroseconds))
 
 // Turn off tracing
-Dbmap.TraceOff()
+dbmap.TraceOff()
 ```
 
 ### Insert
@@ -463,7 +463,7 @@ inv1 := &Invoice{0, 100, 200, "first order", 0}
 inv2 := &Invoice{0, 100, 200, "second order", 0}
 
 // Insert your rows
-err := Dbmap.Insert(inv1, inv2)
+err := dbmap.Insert(inv1, inv2)
 
 // Because we called SetKeys(true) on Invoice, the Id field
 // will be populated after the Insert() automatically
@@ -476,7 +476,7 @@ Continuing the above example, use the `Update` method to modify an Invoice:
 
 ```go
 // count is the # of rows updated, which should be 1 in this example
-count, err := Dbmap.Update(inv1)
+count, err := dbmap.Update(inv1)
 ```
 
 ### Delete
@@ -485,7 +485,7 @@ If you have primary key(s) defined for a struct, you can use the `Delete`
 method to remove rows:
 
 ```go
-count, err := Dbmap.Delete(inv1)
+count, err := dbmap.Delete(inv1)
 ```
 
 ### Select by Key
@@ -495,7 +495,7 @@ nil if no row is found.
 
 ```go
 // fetch Invoice with Id=99
-obj, err := Dbmap.Get(Invoice{}, 99)
+obj, err := dbmap.Get(Invoice{}, 99)
 inv := obj.(*Invoice)
 ```
 
@@ -509,16 +509,16 @@ or a single struct.
 ```go
 // Select a slice - first return value is not needed when a slice pointer is passed to Select()
 var posts []Post
-_, err := Dbmap.Select(&posts, "select * from post order by id")
+_, err := dbmap.Select(&posts, "select * from post order by id")
 
 // You can also use primitive types
 var ids []string
-_, err := Dbmap.Select(&ids, "select id from post")
+_, err := dbmap.Select(&ids, "select id from post")
 
 // Select a single row.
 // Returns an error if no row found, or if more than one row is found
 var post Post
-err := Dbmap.SelectOne(&post, "select * from post where id=?", id)
+err := dbmap.SelectOne(&post, "select * from post where id=?", id)
 ```
 
 Want to do joins?  Just write the SQL and the struct. gorp will bind them:
@@ -539,11 +539,11 @@ type InvoicePersonView struct {
 
 // Create some rows
 p1 := &Person{0, 0, 0, "bob", "smith"}
-Dbmap.Insert(p1)
+dbmap.Insert(p1)
 
 // notice how we can wire up p1.Id to the invoice easily
 inv1 := &Invoice{0, 0, 0, "xmas order", p1.Id}
-Dbmap.Insert(inv1)
+dbmap.Insert(inv1)
 
 // Run your query
 query := "select i.Id InvoiceId, p.Id PersonId, i.Memo, p.FName " +
@@ -552,7 +552,7 @@ query := "select i.Id InvoiceId, p.Id PersonId, i.Memo, p.FName " +
 
 // pass a slice to Select()
 var list []InvoicePersonView
-_, err := Dbmap.Select(&list, query)
+_, err := dbmap.Select(&list, query)
 
 // this should test true
 expected := InvoicePersonView{inv1.Id, p1.Id, inv1.Memo, p1.FName}
@@ -567,10 +567,10 @@ gorp provides a few convenience methods for selecting a single string or int64.
 
 ```go
 // select single int64 from db (use $1 instead of ? for postgresql)
-i64, err := Dbmap.SelectInt("select count(*) from foo where blah=?", blahVal)
+i64, err := dbmap.SelectInt("select count(*) from foo where blah=?", blahVal)
 
 // select single string from db:
-s, err := Dbmap.SelectStr("select name from foo where blah=?", blahVal)
+s, err := dbmap.SelectStr("select name from foo where blah=?", blahVal)
 
 ```
 
@@ -591,7 +591,7 @@ _, err := dbm.Select(&dest, "select * from Foo where name = :name and age = :age
 You can execute raw SQL if you wish.  Particularly good for batch operations.
 
 ```go
-res, err := Dbmap.Exec("delete from invoice_test where PersonId=?", 10)
+res, err := dbmap.Exec("delete from invoice_test where PersonId=?", 10)
 ```
 
 ### Transactions
@@ -599,9 +599,9 @@ res, err := Dbmap.Exec("delete from invoice_test where PersonId=?", 10)
 You can batch operations into a transaction:
 
 ```go
-func InsertInv(Dbmap *DbMap, inv *Invoice, per *Person) error {
+func InsertInv(dbmap *DbMap, inv *Invoice, per *Person) error {
     // Start a new transaction
-    trans, err := Dbmap.Begin()
+    trans, err := dbmap.Begin()
     if err != nil {
         return err
     }
@@ -690,17 +690,17 @@ type Person struct {
 }
 
 p1 := &Person{0, 0, 0, "Bob", "Smith", 0}
-Dbmap.Insert(p1)  // Version is now 1
+dbmap.Insert(p1)  // Version is now 1
 
-obj, err := Dbmap.Get(Person{}, p1.Id)
+obj, err := dbmap.Get(Person{}, p1.Id)
 p2 := obj.(*Person)
 p2.LName = "Edwards"
-Dbmap.Update(p2)  // Version is now 2
+dbmap.Update(p2)  // Version is now 2
 
 p1.LName = "Howard"
 
 // Raises error because p1.Version == 1, which is out of date
-count, err := Dbmap.Update(p1)
+count, err := dbmap.Update(p1)
 _, ok := err.(gorp.OptimisticLockError)
 if ok {
     // should reach this statement
@@ -756,14 +756,14 @@ parsed.  Consequently you may have portability issues if you write a query like 
 
 ```go
 // works on MySQL and Sqlite3, but not with Postgresql
-err := Dbmap.SelectOne(&val, "select * from foo where id = ?", 30)
+err := dbmap.SelectOne(&val, "select * from foo where id = ?", 30)
 ```
 
 In `Select` and `SelectOne` you can use named parameters to work around this.
 The following is portable:
 
 ```go
-err := Dbmap.SelectOne(&val, "select * from foo where id = :id",
+err := dbmap.SelectOne(&val, "select * from foo where id = :id",
    map[string]interface{} { "id": 30})
 ```
 >>>>>>> upstream/master

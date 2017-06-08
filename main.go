@@ -77,7 +77,7 @@ func main() {
 
 		//Seller
 		//Record
-		v1.POST("/sales/:mail", routes.GetSales)
+		v1.POST("/sales/:mail", routes.GetSalesID)
 	}
 	r.Run(":" + port)
 }

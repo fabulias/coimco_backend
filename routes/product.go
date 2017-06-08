@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	"github.com/fabulias/coimco_backend/model"
-	"github.com/fabulias/coimco_backend/stats"
 )
 
 //This route asking for products in a range, if not exists range,
@@ -108,7 +107,7 @@ func GetRankProductK(c *gin.Context) {
 		}
 		c.JSON(http.StatusBadRequest, response)
 	} else {
-		products, err := stats.GetRankProductK(k, in)
+		products, err := model.GetRankProductK(k, in)
 		if err != nil {
 			response := gin.H{
 				"status":  "error",

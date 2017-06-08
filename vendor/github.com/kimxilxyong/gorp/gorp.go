@@ -186,7 +186,7 @@ func (me CustomScanner) Bind() error {
 // Example:
 //
 //     dialect := gorp.MySQLDialect{"InnoDB", "UTF8"}
-//     Dbmap := &gorp.DbMap{Db: db, Dialect: dialect}
+//     dbmap := &gorp.DbMap{Db: db, Dialect: dialect}
 //
 type DbMap struct {
 	// Db handle to use with this map
@@ -207,7 +207,7 @@ type DbMap struct {
 }
 
 // TableMap represents a mapping between a Go struct and a database table
-// Use Dbmap.AddTable() or Dbmap.AddTableWithName() to create these
+// Use dbmap.AddTable() or dbmap.AddTableWithName() to create these
 type TableMap struct {
 	// Name of database table.
 	TableName      string
@@ -223,7 +223,7 @@ type TableMap struct {
 	updatePlan     bindPlan
 	deletePlan     bindPlan
 	getPlan        bindPlan
-	Dbmap          *DbMap
+	dbmap          *DbMap
 }
 
 func (t TableMap) String() string {
@@ -404,7 +404,7 @@ func (t *TableMap) SetVersionCol(field string) *ColumnMap {
 // the specified table and any associated schema
 func (t *TableMap) SqlForCreate(ifNotExists bool) string {
 	s := bytes.Buffer{}
-	dialect := t.Dbmap.Dialect
+	dialect := t.dbmap.Dialect
 
 	if strings.TrimSpace(t.SchemaName) != "" {
 		schemaCreate := "create schema"
@@ -546,27 +546,27 @@ func (t *TableMap) bindInsert(elem reflect.Value) (bindInstance, error) {
 
 		s := bytes.Buffer{}
 		s2 := bytes.Buffer{}
-		s.WriteString(fmt.Sprintf("insert into %s (", t.Dbmap.Dialect.QuotedTableForQuery(t.SchemaName, t.TableName)))
+		s.WriteString(fmt.Sprintf("insert into %s (", t.dbmap.Dialect.QuotedTableForQuery(t.SchemaName, t.TableName)))
 
 		x := 0
 		first := true
 		for y := range t.Columns {
 			col := t.Columns[y]
-			if !(col.isAutoIncr && t.Dbmap.Dialect.AutoIncrBindValue() == "") {
+			if !(col.isAutoIncr && t.dbmap.Dialect.AutoIncrBindValue() == "") {
 				if !col.Transient {
 					if !first {
 						s.WriteString(",")
 						s2.WriteString(",")
 					}
-					s.WriteString(t.Dbmap.Dialect.QuoteField(col.ColumnName))
+					s.WriteString(t.dbmap.Dialect.QuoteField(col.ColumnName))
 
 					if col.isAutoIncr {
-						s2.WriteString(t.Dbmap.Dialect.AutoIncrBindValue())
+						s2.WriteString(t.dbmap.Dialect.AutoIncrBindValue())
 						plan.autoIncrIdx = y
 						plan.autoIncrFieldName = col.fieldName
 					} else {
 						if col.DefaultValue == "" {
-							s2.WriteString(t.Dbmap.Dialect.BindVar(x))
+							s2.WriteString(t.dbmap.Dialect.BindVar(x))
 							if col == t.version {
 								plan.versField = col.fieldName
 								plan.argFields = append(plan.argFields, versFieldConst)
@@ -595,15 +595,15 @@ func (t *TableMap) bindInsert(elem reflect.Value) (bindInstance, error) {
 		s.WriteString(s2.String())
 		s.WriteString(")")
 		if plan.autoIncrIdx > -1 {
-			s.WriteString(t.Dbmap.Dialect.AutoIncrInsertSuffix(t.Columns[plan.autoIncrIdx]))
+			s.WriteString(t.dbmap.Dialect.AutoIncrInsertSuffix(t.Columns[plan.autoIncrIdx]))
 		}
-		s.WriteString(t.Dbmap.Dialect.QuerySuffix())
+		s.WriteString(t.dbmap.Dialect.QuerySuffix())
 
 		plan.query = s.String()
 		t.insertPlan = plan
 	}
 
-	return plan.createBindInstance(elem, t.Dbmap.TypeConverter)
+	return plan.createBindInstance(elem, t.dbmap.TypeConverter)
 }
 
 func (t *TableMap) bindUpdate(elem reflect.Value) (bindInstance, error) {
@@ -611,7 +611,7 @@ func (t *TableMap) bindUpdate(elem reflect.Value) (bindInstance, error) {
 	if plan.query == "" {
 
 		s := bytes.Buffer{}
-		s.WriteString(fmt.Sprintf("update %s set ", t.Dbmap.Dialect.QuotedTableForQuery(t.SchemaName, t.TableName)))
+		s.WriteString(fmt.Sprintf("update %s set ", t.dbmap.Dialect.QuotedTableForQuery(t.SchemaName, t.TableName)))
 		x := 0
 
 		for y := range t.Columns {
@@ -620,9 +620,9 @@ func (t *TableMap) bindUpdate(elem reflect.Value) (bindInstance, error) {
 				if x > 0 {
 					s.WriteString(", ")
 				}
-				s.WriteString(t.Dbmap.Dialect.QuoteField(col.ColumnName))
+				s.WriteString(t.dbmap.Dialect.QuoteField(col.ColumnName))
 				s.WriteString("=")
-				s.WriteString(t.Dbmap.Dialect.BindVar(x))
+				s.WriteString(t.dbmap.Dialect.BindVar(x))
 
 				if col == t.version {
 					plan.versField = col.fieldName
@@ -644,9 +644,9 @@ func (t *TableMap) bindUpdate(elem reflect.Value) (bindInstance, error) {
 			if y > 0 {
 				s.WriteString(" and ")
 			}
-			s.WriteString(t.Dbmap.Dialect.QuoteField(col.ColumnName))
+			s.WriteString(t.dbmap.Dialect.QuoteField(col.ColumnName))
 			s.WriteString("=")
-			s.WriteString(t.Dbmap.Dialect.BindVar(x))
+			s.WriteString(t.dbmap.Dialect.BindVar(x))
 
 			plan.argFields = append(plan.argFields, col.fieldName)
 			plan.keyFields = append(plan.keyFields, col.fieldName)
@@ -654,18 +654,18 @@ func (t *TableMap) bindUpdate(elem reflect.Value) (bindInstance, error) {
 		}
 		if plan.versField != "" {
 			s.WriteString(" and ")
-			s.WriteString(t.Dbmap.Dialect.QuoteField(t.version.ColumnName))
+			s.WriteString(t.dbmap.Dialect.QuoteField(t.version.ColumnName))
 			s.WriteString("=")
-			s.WriteString(t.Dbmap.Dialect.BindVar(x))
+			s.WriteString(t.dbmap.Dialect.BindVar(x))
 			plan.argFields = append(plan.argFields, plan.versField)
 		}
-		s.WriteString(t.Dbmap.Dialect.QuerySuffix())
+		s.WriteString(t.dbmap.Dialect.QuerySuffix())
 
 		plan.query = s.String()
 		t.updatePlan = plan
 	}
 
-	return plan.createBindInstance(elem, t.Dbmap.TypeConverter)
+	return plan.createBindInstance(elem, t.dbmap.TypeConverter)
 }
 
 func (t *TableMap) bindDelete(elem reflect.Value) (bindInstance, error) {
@@ -673,7 +673,7 @@ func (t *TableMap) bindDelete(elem reflect.Value) (bindInstance, error) {
 	if plan.query == "" {
 
 		s := bytes.Buffer{}
-		s.WriteString(fmt.Sprintf("delete from %s", t.Dbmap.Dialect.QuotedTableForQuery(t.SchemaName, t.TableName)))
+		s.WriteString(fmt.Sprintf("delete from %s", t.dbmap.Dialect.QuotedTableForQuery(t.SchemaName, t.TableName)))
 
 		for y := range t.Columns {
 			col := t.Columns[y]
@@ -690,28 +690,28 @@ func (t *TableMap) bindDelete(elem reflect.Value) (bindInstance, error) {
 			if x > 0 {
 				s.WriteString(" and ")
 			}
-			s.WriteString(t.Dbmap.Dialect.QuoteField(k.ColumnName))
+			s.WriteString(t.dbmap.Dialect.QuoteField(k.ColumnName))
 			s.WriteString("=")
-			s.WriteString(t.Dbmap.Dialect.BindVar(x))
+			s.WriteString(t.dbmap.Dialect.BindVar(x))
 
 			plan.keyFields = append(plan.keyFields, k.fieldName)
 			plan.argFields = append(plan.argFields, k.fieldName)
 		}
 		if plan.versField != "" {
 			s.WriteString(" and ")
-			s.WriteString(t.Dbmap.Dialect.QuoteField(t.version.ColumnName))
+			s.WriteString(t.dbmap.Dialect.QuoteField(t.version.ColumnName))
 			s.WriteString("=")
-			s.WriteString(t.Dbmap.Dialect.BindVar(len(plan.argFields)))
+			s.WriteString(t.dbmap.Dialect.BindVar(len(plan.argFields)))
 
 			plan.argFields = append(plan.argFields, plan.versField)
 		}
-		s.WriteString(t.Dbmap.Dialect.QuerySuffix())
+		s.WriteString(t.dbmap.Dialect.QuerySuffix())
 
 		plan.query = s.String()
 		t.deletePlan = plan
 	}
 
-	return plan.createBindInstance(elem, t.Dbmap.TypeConverter)
+	return plan.createBindInstance(elem, t.dbmap.TypeConverter)
 }
 
 func (t *TableMap) bindGet() bindPlan {
@@ -727,26 +727,26 @@ func (t *TableMap) bindGet() bindPlan {
 				if x > 0 {
 					s.WriteString(",")
 				}
-				s.WriteString(t.Dbmap.Dialect.QuoteField(col.ColumnName))
+				s.WriteString(t.dbmap.Dialect.QuoteField(col.ColumnName))
 				plan.argFields = append(plan.argFields, col.fieldName)
 				x++
 			}
 		}
 		s.WriteString(" from ")
-		s.WriteString(t.Dbmap.Dialect.QuotedTableForQuery(t.SchemaName, t.TableName))
+		s.WriteString(t.dbmap.Dialect.QuotedTableForQuery(t.SchemaName, t.TableName))
 		s.WriteString(" where ")
 		for x := range t.keys {
 			col := t.keys[x]
 			if x > 0 {
 				s.WriteString(" and ")
 			}
-			s.WriteString(t.Dbmap.Dialect.QuoteField(col.ColumnName))
+			s.WriteString(t.dbmap.Dialect.QuoteField(col.ColumnName))
 			s.WriteString("=")
-			s.WriteString(t.Dbmap.Dialect.BindVar(x))
+			s.WriteString(t.dbmap.Dialect.BindVar(x))
 
 			plan.keyFields = append(plan.keyFields, col.fieldName)
 		}
-		s.WriteString(t.Dbmap.Dialect.QuerySuffix())
+		s.WriteString(t.dbmap.Dialect.QuerySuffix())
 
 		plan.query = s.String()
 		t.getPlan = plan
@@ -849,7 +849,7 @@ func (c *ColumnMap) SetMaxSize(size int) *ColumnMap {
 // of that transaction.  Transactions should be terminated with
 // a call to Commit() or Rollback()
 type Transaction struct {
-	Dbmap  *DbMap
+	dbmap  *DbMap
 	tx     *sql.Tx
 	closed bool
 }
@@ -962,7 +962,7 @@ func (m *DbMap) AddTableWithNameAndSchema(i interface{}, schema string, name str
 		log.Printf("AddTable type %v\n", t)
 	}
 
-	tmap := &TableMap{gotype: t, TableName: name, SchemaName: schema, Dbmap: m}
+	tmap := &TableMap{gotype: t, TableName: name, SchemaName: schema, dbmap: m}
 
 	tmap.Columns = m.readStructColumns(t, tmap)
 
@@ -2055,34 +2055,34 @@ func (m *DbMap) ParseTag(tag reflect.StructTag) (pt GorpParsedTag) {
 
 // Insert has the same behavior as DbMap.Insert(), but runs in a transaction.
 func (t *Transaction) Insert(list ...interface{}) error {
-	return insert(t.Dbmap, t, false, list...)
+	return insert(t.dbmap, t, false, list...)
 }
 
 // Update had the same behavior as DbMap.Update(), but runs in a transaction.
 func (t *Transaction) Update(list ...interface{}) (int64, error) {
-	return update(t.Dbmap, t, false, list...)
+	return update(t.dbmap, t, false, list...)
 }
 
 // Delete has the same behavior as DbMap.Delete(), but runs in a transaction.
 func (t *Transaction) Delete(list ...interface{}) (int64, error) {
-	return delete(t.Dbmap, t, list...)
+	return delete(t.dbmap, t, list...)
 }
 
 // Get has the same behavior as DbMap.Get(), but runs in a transaction.
 func (t *Transaction) Get(i interface{}, keys ...interface{}) (interface{}, error) {
-	return get(t.Dbmap, t, i, false, 0, 0, keys...)
+	return get(t.dbmap, t, i, false, 0, 0, keys...)
 }
 
 // Select has the same behavior as DbMap.Select(), but runs in a transaction.
 func (t *Transaction) Select(i interface{}, query string, args ...interface{}) ([]interface{}, error) {
-	return hookedselect(t.Dbmap, t, i, query, args...)
+	return hookedselect(t.dbmap, t, i, query, args...)
 }
 
 // Exec has the same behavior as DbMap.Exec(), but runs in a transaction.
 func (t *Transaction) Exec(query string, args ...interface{}) (sql.Result, error) {
-	if t.Dbmap.logger != nil {
+	if t.dbmap.logger != nil {
 		now := time.Now()
-		defer t.Dbmap.trace(now, query, args...)
+		defer t.dbmap.trace(now, query, args...)
 	}
 	return exec(t, query, args...)
 }
@@ -2119,16 +2119,16 @@ func (t *Transaction) SelectNullStr(query string, args ...interface{}) (sql.Null
 
 // SelectOne is a convenience wrapper around the gorp.SelectOne function.
 func (t *Transaction) SelectOne(holder interface{}, query string, args ...interface{}) error {
-	return SelectOne(t.Dbmap, t, holder, query, args...)
+	return SelectOne(t.dbmap, t, holder, query, args...)
 }
 
 // Commit commits the underlying database transaction.
 func (t *Transaction) Commit() error {
 	if !t.closed {
 		t.closed = true
-		if t.Dbmap.logger != nil {
+		if t.dbmap.logger != nil {
 			now := time.Now()
-			defer t.Dbmap.trace(now, "commit;")
+			defer t.dbmap.trace(now, "commit;")
 		}
 		return t.tx.Commit()
 	}
@@ -2140,9 +2140,9 @@ func (t *Transaction) Commit() error {
 func (t *Transaction) Rollback() error {
 	if !t.closed {
 		t.closed = true
-		if t.Dbmap.logger != nil {
+		if t.dbmap.logger != nil {
 			now := time.Now()
-			defer t.Dbmap.trace(now, "rollback;")
+			defer t.dbmap.trace(now, "rollback;")
 		}
 		return t.tx.Rollback()
 	}
@@ -2154,10 +2154,10 @@ func (t *Transaction) Rollback() error {
 // directly into the SQL SAVEPOINT statement, so you must sanitize it if it is
 // derived from user input.
 func (t *Transaction) Savepoint(name string) error {
-	query := "savepoint " + t.Dbmap.Dialect.QuoteField(name)
-	if t.Dbmap.logger != nil {
+	query := "savepoint " + t.dbmap.Dialect.QuoteField(name)
+	if t.dbmap.logger != nil {
 		now := time.Now()
-		defer t.Dbmap.trace(now, query, nil)
+		defer t.dbmap.trace(now, query, nil)
 	}
 	_, err := t.tx.Exec(query)
 	return err
@@ -2167,10 +2167,10 @@ func (t *Transaction) Savepoint(name string) error {
 // name is interpolated directly into the SQL SAVEPOINT statement, so you must
 // sanitize it if it is derived from user input.
 func (t *Transaction) RollbackToSavepoint(savepoint string) error {
-	query := "rollback to savepoint " + t.Dbmap.Dialect.QuoteField(savepoint)
-	if t.Dbmap.logger != nil {
+	query := "rollback to savepoint " + t.dbmap.Dialect.QuoteField(savepoint)
+	if t.dbmap.logger != nil {
 		now := time.Now()
-		defer t.Dbmap.trace(now, query, nil)
+		defer t.dbmap.trace(now, query, nil)
 	}
 	_, err := t.tx.Exec(query)
 	return err
@@ -2180,10 +2180,10 @@ func (t *Transaction) RollbackToSavepoint(savepoint string) error {
 // interpolated directly into the SQL SAVEPOINT statement, so you must sanitize
 // it if it is derived from user input.
 func (t *Transaction) ReleaseSavepoint(savepoint string) error {
-	query := "release savepoint " + t.Dbmap.Dialect.QuoteField(savepoint)
-	if t.Dbmap.logger != nil {
+	query := "release savepoint " + t.dbmap.Dialect.QuoteField(savepoint)
+	if t.dbmap.logger != nil {
 		now := time.Now()
-		defer t.Dbmap.trace(now, query, nil)
+		defer t.dbmap.trace(now, query, nil)
 	}
 	_, err := t.tx.Exec(query)
 	return err
@@ -2191,25 +2191,25 @@ func (t *Transaction) ReleaseSavepoint(savepoint string) error {
 
 // Prepare has the same behavior as DbMap.Prepare(), but runs in a transaction.
 func (t *Transaction) Prepare(query string) (*sql.Stmt, error) {
-	if t.Dbmap.logger != nil {
+	if t.dbmap.logger != nil {
 		now := time.Now()
-		defer t.Dbmap.trace(now, query, nil)
+		defer t.dbmap.trace(now, query, nil)
 	}
 	return t.tx.Prepare(query)
 }
 
 func (t *Transaction) queryRow(query string, args ...interface{}) *sql.Row {
-	if t.Dbmap.logger != nil {
+	if t.dbmap.logger != nil {
 		now := time.Now()
-		defer t.Dbmap.trace(now, query, args...)
+		defer t.dbmap.trace(now, query, args...)
 	}
 	return t.tx.QueryRow(query, args...)
 }
 
 func (t *Transaction) query(query string, args ...interface{}) (*sql.Rows, error) {
-	if t.Dbmap.logger != nil {
+	if t.dbmap.logger != nil {
 		now := time.Now()
-		defer t.Dbmap.trace(now, query, args...)
+		defer t.dbmap.trace(now, query, args...)
 	}
 	return t.tx.Query(query, args...)
 }
@@ -2358,7 +2358,7 @@ func selectVal(e SqlExecutor, holder interface{}, query string, args ...interfac
 		case *DbMap:
 			query, args = maybeExpandNamedQuery(m, query, args)
 		case *Transaction:
-			query, args = maybeExpandNamedQuery(m.Dbmap, query, args)
+			query, args = maybeExpandNamedQuery(m.dbmap, query, args)
 		}
 	}
 
@@ -2584,7 +2584,7 @@ func exec(e SqlExecutor, query string, args ...interface{}) (sql.Result, error) 
 		dbMap = m
 	case *Transaction:
 		executor = m.tx
-		dbMap = m.Dbmap
+		dbMap = m.dbmap
 	}
 
 	if len(args) == 1 {
