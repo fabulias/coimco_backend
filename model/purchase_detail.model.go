@@ -4,7 +4,7 @@ func GetPurchaseDetail(purchase_id, product_id uint) (PurchaseDetail, error) {
 	var purchase_detail PurchaseDetail
 	purchase_detail.PurchaseID = purchase_id
 	purchase_detail.ProductID = product_id
-	err = dbmap.Where("purchase_id = $1 AND product_id = $2",
+	err = Dbmap.Where("purchase_id = $1 AND product_id = $2",
 		purchase_detail.PurchaseID,
 		purchase_detail.ProductID).First(&purchase_detail).Error
 	checkErr(err, selectOneFailed)
@@ -12,7 +12,7 @@ func GetPurchaseDetail(purchase_id, product_id uint) (PurchaseDetail, error) {
 }
 
 func InsertPurchaseDetail(in *PurchaseDetail) (*PurchaseDetail, bool) {
-	err = dbmap.Create(in).Error
+	err = Dbmap.Create(in).Error
 	if err != nil {
 		return in, false
 	} else {

@@ -21,6 +21,11 @@ func checkSize(sample interface{}) bool {
 			flag = true
 			return flag
 		}
+	case []model.Date:
+		if len(val) == 0 {
+			flag = true
+			return flag
+		}
 	case []model.Product:
 		if len(val) == 0 {
 			flag = true

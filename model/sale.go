@@ -9,3 +9,8 @@ type Sale struct {
 	UserID     string    `json:"id_user" binding:"required"`
 	Date       time.Time `json:"date" binding:"required"`
 }
+
+type InfoDashboard struct {
+	Count uint
+	Sum   uint
+}

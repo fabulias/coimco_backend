@@ -7,10 +7,10 @@ func GetCustomers(limit, offset string) ([]Customer, string) {
 	var customers []Customer
 	var count int64
 	//Here obtain total length of table.
-	err = dbmap.Table("customers").Count(count).Error
+	err = Dbmap.Table("customers").Count(count).Error
 	checkErr(err, countFailed)
 	//Here obtain the customers previously selected.
-	err = dbmap.Offset(offset).Limit(limit).Find(&customers).Error
+	err = Dbmap.Offset(offset).Limit(limit).Find(&customers).Error
 	checkErr(err, selectFailed)
 	return customers, strconv.Itoa(int(count))
 }
@@ -19,8 +19,8 @@ func GetCustomers(limit, offset string) ([]Customer, string) {
 func GetCustomer(rut string) (Customer, error) {
 	var customer Customer
 	customer.Rut = rut
-	err := dbmap.Where("rut=?", rut).First(&customer).Error
-	//err := dbmap.First(&customer, customer.Rut).Error
+	err := Dbmap.Where("rut=?", rut).First(&customer).Error
+	//err := Dbmap.First(&customer, customer.Rut).Error
 	//log.Println(err.Error())
 	checkErr(err, selectOneFailed)
 	return customer, err
@@ -28,7 +28,7 @@ func GetCustomer(rut string) (Customer, error) {
 
 //This function allow insert customer' resource
 func InsertCustomer(in *Customer) (*Customer, bool) {
-	err = dbmap.Create(in).Error
+	err = Dbmap.Create(in).Error
 	if err != nil {
 		return in, false
 	} else {

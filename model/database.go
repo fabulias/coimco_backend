@@ -11,7 +11,7 @@ import (
 )
 
 var err error
-var dbmap = initDb()
+var Dbmap = initDb()
 
 //Initialize database
 func initDb() *gorm.DB {

@@ -1,13 +1,13 @@
 package routes
 
 import (
-	"github.com/fabulias/coimco_backend/model"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
-
-	//"log"
 	"net/http"
 	"strconv"
+
+	"github.com/fabulias/coimco_backend/model"
+	"github.com/fabulias/coimco_backend/stats"
 )
 
 //This route asking for products in a range, if not exists range,
@@ -93,5 +93,36 @@ func PostProduct(c *gin.Context) {
 			"message": PostMessageError + " a client",
 		}
 		c.JSON(http.StatusBadRequest, response)
+	}
+}
+
+func GetRankProductK(c *gin.Context) {
+	k := c.Param("k")
+	var in model.Date
+	err := c.BindJSON(&in)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, response)
+	} else {
+		products, err := stats.GetRankProductK(k, in)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": err.Error(),
+			}
+			c.JSON(http.StatusBadRequest, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    products,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
 	}
 }

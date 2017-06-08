@@ -68,6 +68,16 @@ func main() {
 		v1.POST("/sales", routes.PostSale)
 		v1.POST("/purchases", routes.PostPurchase)
 		v1.POST("tags_customer", routes.PostTagCustomer)
+
+		//Admin and manager
+		// Stats
+		v1.GET("/productsrank/:k", routes.GetRankProductK)
+
+		//Record
+
+		//Seller
+		//Record
+		v1.POST("/sales/:mail", routes.GetSales)
 	}
 	r.Run(":" + port)
 }
