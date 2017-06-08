@@ -5,7 +5,7 @@ import "github.com/jinzhu/gorm"
 
 type Purchase struct {
 	gorm.Model
-	ProviderID string    `json:"id_customer" binding:"required"`
+	ProviderID string    `json:"id_provider" binding:"required"`
 	Date       time.Time `json:"date" binding:"required"`
 	ShipTime   time.Time `json:"shiptime" binding:"required"`
 }

@@ -59,7 +59,7 @@ func PostSale(c *gin.Context) {
 		response := gin.H{
 			"status":  "error",
 			"data":    sale,
-			"message": PostMessageError + " a client",
+			"message": PostMessageError + " a sale",
 		}
 		c.JSON(http.StatusBadRequest, response)
 	}

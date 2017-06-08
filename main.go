@@ -54,8 +54,8 @@ func main() {
 		v1.GET("/tags/:id", routes.GetTag)
 		v1.GET("/sale_detail/:sale_id/:product_id", routes.GetSaleDetail)
 		v1.GET("/purchase_detail/:purchase_id/:product_id", routes.GetPurchaseDetail)
-		v1.GET("/sales", routes.GetSale)
-		v1.GET("/purchases", routes.PostPurchase)
+		v1.GET("/sales/:cus_id/:user_id", routes.GetSale)
+		v1.GET("/purchases/:prov_id", routes.PostPurchase)
 
 		//Methods POST
 		v1.POST("/customers", routes.PostCustomer)
