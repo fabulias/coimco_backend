@@ -1,6 +1,11 @@
 package model
 
 type TotalSalesID struct {
-	count uint
-	sum   uint
+	Count uint
+	Sum   uint
+}
+
+type TotalPurchasesID struct {
+	Count uint
+	Sum   uint
 }

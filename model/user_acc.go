@@ -17,7 +17,7 @@ type UserAcc struct {
 	Rut      string `json:"rut" binding:"required"`
 	Pass     string `json:"pass" binding:"required"`
 	Role     int8   `json:"role" binding:"required"`
-	Active   bool   `json:"active"`
+	Active   bool
 
 	CreatedAt time.Time
 	UpdatedAt time.Time

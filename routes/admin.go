@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/fabulias/coimco_backend/hash"
@@ -14,6 +15,9 @@ func PostAccount(c *gin.Context) {
 	var in model.UserAcc
 	err := c.BindJSON(&in)
 	checkErr(err, BindJson)
+	if err != nil {
+		log.Println(err.Error())
+	}
 	if model.CheckInAccount(in) {
 		response := gin.H{
 			"status":  "error",
