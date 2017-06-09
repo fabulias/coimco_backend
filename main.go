@@ -71,9 +71,10 @@ func main() {
 
 		//Admin and manager
 		// Stats
-		v1.GET("/productsrank/:k", routes.GetRankProductK)
+		v1.POST("/productsrank/:k", routes.GetRankProductK)
 
 		//Record
+		v1.POST("/sales_total", routes.GetSales)
 
 		//Seller
 		//Record

@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
+//GetSalesID bind JSON, param URI inputs and call model stats
 func GetSalesID(c *gin.Context) {
-	//Creating limit and offset from query
 	mail := c.Param("mail")
 	var in model.Date
 	err := c.BindJSON(&in)
@@ -22,8 +22,39 @@ func GetSalesID(c *gin.Context) {
 		}
 		c.JSON(http.StatusNotFound, response)
 	} else {
+		res, err := model.GetSalesID(mail, in)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": GetMessageErrorPlural + " sales",
+			}
+			c.JSON(http.StatusNotFound, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    res,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
+	}
+}
+
+//GetSales bind JSON input and call model stats
+func GetSales(c *gin.Context) {
+	var in model.Date
+	err := c.BindJSON(&in)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": BindJson,
+		}
+		c.JSON(http.StatusNotFound, response)
+	} else {
 		//Asking to model
-		res, count, err := model.GetSalesID(mail, in)
+		res, count, err := model.GetSales(in)
 		//Updating X-Total-Count
 		c.Header(TotalCount, count)
 		//If length of sales is zero,
