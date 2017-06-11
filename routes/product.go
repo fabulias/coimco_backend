@@ -125,3 +125,35 @@ func GetRankProductK(c *gin.Context) {
 		}
 	}
 }
+
+//GetSalesProductIDRec make route to model
+func GetSalesProductIDRec(c *gin.Context) {
+	id := c.Param("id")
+	var in model.Date
+	err := c.BindJSON(&in)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, response)
+	} else {
+		sales, err := model.GetSalesProductIDRec(id, in)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": err.Error(),
+			}
+			c.JSON(http.StatusBadRequest, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    sales,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
+	}
+}

@@ -1,5 +1,6 @@
 package model
 
+//GetRankProductK returns a ranking of products
 func GetRankProductK(k string, in Date) ([]Product, error) {
 	var products []Product
 	err = dbmap.Raw("SELECT product.* FROM product, (SELECT count(sale_detail."+

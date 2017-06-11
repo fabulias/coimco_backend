@@ -25,6 +25,7 @@ func Cors() gin.HandlerFunc {
 
 func main() {
 	port := os.Getenv("PORT")
+	log.Println("PORT -> ", os.Getenv("PORT"))
 	if port == "" {
 		port = "8080"
 	}
@@ -69,14 +70,24 @@ func main() {
 		v1.POST("/purchases", routes.PostPurchase)
 		v1.POST("tags_customer", routes.PostTagCustomer)
 
-		//Admin and manager
+		// *** Admin and manager ***
 		// Stats
-		v1.POST("/productsrank/:k", routes.GetRankProductK)
+		v1.POST("/productsrank_k/:k", routes.GetRankProductK)
+		v1.POST("/productsrank_c/:category")
+		v1.POST("/productsrank_b/:brand")
+		v1.POST("/productsprice/:id")
+
+		v1.POST("/customersrank_k/:k")
+
+		v1.POST("/purchasesrank_k/:k")
+		v1.POST("/purchasesrank_tag/:k/<tag>")
+		v1.POST("/purchasesrank_time/:tag")
 
 		//Record
+		v1.POST("/productsrec/:id", routes.GetSalesProductIDRec)
 		v1.POST("/sales_total", routes.GetSales)
 
-		//Seller
+		// *** Seller ***
 		//Record
 		v1.POST("/sales/:mail", routes.GetSalesID)
 	}
