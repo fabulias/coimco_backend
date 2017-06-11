@@ -73,8 +73,8 @@ func main() {
 		// *** Admin and manager ***
 		// Stats
 		v1.POST("/productsrank_k/:k", routes.GetRankProductK)
-		v1.POST("/productsrank_c/:category")
-		v1.POST("/productsrank_b/:brand")
+		v1.POST("/productsrank_c/:category", routes.GetRankProductCategory)
+		v1.POST("/productsrank_b/:brand", routes.GetRankProductBrand)
 		v1.POST("/productsprice/:id")
 
 		v1.POST("/customersrank_k/:k")

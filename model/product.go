@@ -10,3 +10,9 @@ type Product struct {
 	Brand    string `json:"brand" binding:"required"`
 	Category string `json:"category" binding:"required"`
 }
+
+type InfoProduct struct {
+	ID    uint
+	Name  string
+	Count uint
+}

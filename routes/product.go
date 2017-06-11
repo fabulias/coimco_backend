@@ -157,3 +157,67 @@ func GetSalesProductIDRec(c *gin.Context) {
 		}
 	}
 }
+
+//GetRankProductCategory make route to stats model
+func GetRankProductCategory(c *gin.Context) {
+	category := c.Param("category")
+	var in model.Date
+	err := c.BindJSON(&in)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, response)
+	} else {
+		products, err := model.GetRankProductCategory(category, in)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": err.Error(),
+			}
+			c.JSON(http.StatusBadRequest, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    products,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
+	}
+}
+
+//GetRankProductBrand make route to stats model
+func GetRankProductBrand(c *gin.Context) {
+	brand := c.Param("brand")
+	var in model.Date
+	err := c.BindJSON(&in)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, response)
+	} else {
+		products, err := model.GetRankProductBrand(brand, in)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": err.Error(),
+			}
+			c.JSON(http.StatusBadRequest, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    products,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
+	}
+}
