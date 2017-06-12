@@ -19,6 +19,8 @@ func Cors() gin.HandlerFunc {
 	log.Println("CORS Middleware")
 	return func(c *gin.Context) {
 		c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Add("Access-Control-Allow-Headers",
+			"Origin, X-Requested-With, Content-Type, Accept, Authorization")
 		c.Next()
 	}
 }
@@ -85,6 +87,7 @@ func main() {
 
 		//Record
 		v1.POST("/productsrec/:id", routes.GetSalesProductIDRec)
+
 		v1.POST("/sales_total", routes.GetSales)
 
 		// *** Seller ***
