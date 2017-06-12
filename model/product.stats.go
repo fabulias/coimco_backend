@@ -15,13 +15,12 @@ func GetRankProductK(k string, in Date) ([]Product, error) {
 //GetRankProductCategory returns a ranking of products for category
 func GetRankProductCategory(category string, in Date) ([]InfoProduct, error) {
 	var products []InfoProduct
-	err = dbmap.Raw("SELECT product.id, product.name , COUNT(sale_detail."+
-		"product_id) AS sales FROM tag, tag_customer, sale_detail, sale, product "+
-		"WHERE tag.name=? AND tag_customer.tag_id=tag.id AND "+
-		"sale.customer_id=tag_customer.customer_id AND sale_detail.sale_id=sale.id"+
-		" AND sale.date >= ? AND sale.date<=? AND "+
-		"product.id=sale_detail.product_id GROUP BY product.id ORDER BY sales DESC",
-		category, in.Start, in.End).Scan(&products).Error
+	err = dbmap.Raw("SELECT product.id, product.name , COUNT(product.id) AS "+
+		"sales FROM  sale_detail, sale, product WHERE sale.date>=? AND "+
+		"sale.date<=? AND sale_detail.sale_id= sale.id AND product.id="+
+		"sale_detail.product_id AND product.category=? GROUP BY "+
+		"product.id ORDER BY sales DESC",
+		in.Start, in.End, category).Scan(&products).Error
 	return products, err
 }
 

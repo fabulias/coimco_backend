@@ -1,6 +1,7 @@
 package model
 
 import "github.com/jinzhu/gorm"
+import "time"
 
 //Product represents the products in the application
 type Product struct {
@@ -16,4 +17,9 @@ type InfoProduct struct {
 	Name  string
 	Sales uint
 	Total uint
+}
+
+type ProductPrice struct {
+	Price uint
+	Date  time.Time
 }

@@ -34,7 +34,6 @@ func Cors() gin.HandlerFunc {
 
 func main() {
 	port := os.Getenv("PORT")
-	log.Println("PORT -> ", os.Getenv("PORT"))
 	if port == "" {
 		port = "8080"
 	}
@@ -81,21 +80,24 @@ func main() {
 
 		// *** Admin and manager ***
 		// Stats
-		v1.POST("/productsrank_k/:k", routes.GetRankProductK)
-		v1.POST("/productsrank_c/:category", routes.GetRankProductCategory)
-		v1.POST("/productsrank_b/:brand", routes.GetRankProductBrand)
-		v1.POST("/productsprice/:id")
+		v1.POST("/productsrank-k/:k", routes.GetRankProductK)
+		v1.POST("/productsrank-c/:category", routes.GetRankProductCategory)
+		v1.POST("/productsrank-b/:brand", routes.GetRankProductBrand)
 
-		v1.POST("/customersrank_k/:k")
+		v1.POST("/customersrank-k/:k", routes.GetRankCustomerK)
+		v1.POST("/customersrec-p/:id_customer", routes.GetProductTotal)
+		v1.POST("/customersrec-d/:id_customer")
+		v1.POST("/customersrec-f/:id_customer")
 
-		v1.POST("/purchasesrank_k/:k")
-		v1.POST("/purchasesrank_tag/:k/<tag>")
-		v1.POST("/purchasesrank_time/:tag")
+		v1.POST("/purchasesrank-k/:k")
+		v1.POST("/purchasesrank-tag/:k/<tag>")
+		v1.POST("/purchasesrank-time/:tag")
 
 		//Record
 		v1.POST("/productsrec/:id", routes.GetSalesProductIDRec)
+		v1.POST("/productsprice/:id", routes.GetProductPrice)
 
-		v1.POST("/sales_total", routes.GetSales)
+		v1.POST("/sales-total", routes.GetSales)
 
 		// *** Seller ***
 		//Record
