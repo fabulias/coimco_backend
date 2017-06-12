@@ -42,7 +42,6 @@ func ValidateToken() gin.HandlerFunc {
 		//Parsing header request
 		headerAuth := c.Request.Header["Authorization"]
 		if len(headerAuth) < 1 {
-			log.Println("entro")
 			response := gin.H{
 				"status":  "error",
 				"data":    nil,

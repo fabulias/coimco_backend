@@ -7,7 +7,7 @@ func GetProducts(limit, offset string) ([]Product, string) {
 	var products []Product
 	var count int64
 	//Here obtain total length of table.
-	dbmap.Table("products").Count(count)
+	dbmap.Table("product").Count(&count)
 	//Here obtain the products previously selected.
 	dbmap.Limit(limit).Offset(offset).Find(&products)
 	return products, strconv.Itoa(int(count))

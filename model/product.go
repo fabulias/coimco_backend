@@ -14,5 +14,6 @@ type Product struct {
 type InfoProduct struct {
 	ID    uint
 	Name  string
-	Count uint
+	Sales uint
+	Total uint
 }
