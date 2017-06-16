@@ -10,3 +10,14 @@ func GetProductTotal(id string, in Date) ([]CustomerRecProd, error) {
 		id, in.Start, in.End).Scan(&products).Error
 	return products, err
 }
+
+//GetTotalCash returns the total sales of a product for this client
+func GetTotalCash(id string, in Date) (CustomerCash, error) {
+	var total_cash CustomerCash
+	err = dbmap.Raw("SELECT SUM(sale_detail.quantity*sale_detail.price) AS cash"+
+		" FROM sale, sale_detail, customer WHERE customer.rut=? AND "+
+		"sale.customer_id=customer.rut AND sale.date >= ? AND sale.date"+
+		"<= ? AND sale_detail.sale_id=sale.id",
+		id, in.Start, in.End).Scan(&total_cash).Error
+	return total_cash, err
+}

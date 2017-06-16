@@ -134,7 +134,7 @@ func GetRankCustomerK(c *gin.Context) {
 	}
 }
 
-//GetProductPrice make route to record model
+//GetProductTotal make route to record model
 func GetProductTotal(c *gin.Context) {
 	id := c.Param("id_customer")
 	var in model.Date
@@ -159,6 +159,38 @@ func GetProductTotal(c *gin.Context) {
 			response := gin.H{
 				"status":  "success",
 				"data":    products,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
+	}
+}
+
+//GetTotalCash make route to record model
+func GetTotalCash(c *gin.Context) {
+	id := c.Param("id_customer")
+	var in model.Date
+	err := c.BindJSON(&in)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, response)
+	} else {
+		total_cash, err := model.GetTotalCash(id, in)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": err.Error(),
+			}
+			c.JSON(http.StatusBadRequest, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    total_cash,
 				"message": nil,
 			}
 			c.JSON(http.StatusOK, response)

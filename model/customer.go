@@ -17,3 +17,8 @@ type CustomerRecProd struct {
 	Name  string
 	Total uint
 }
+
+//CustomerRecProd is a struct for record model GetProductTotal
+type CustomerCash struct {
+	Cash uint
+}
