@@ -1,12 +1,14 @@
 package model
 
+import "time"
+
 //Customer represents the clients in the application
 type Customer struct {
 	Agent
 }
 
-//InfoCustomer is a struct of rank of a base
-type InfoCustomer struct {
+//CustomerRankK is a struct of rank of a base
+type CustomerRankK struct {
 	Name  string
 	Count uint
 	Cash  uint
@@ -18,7 +20,22 @@ type CustomerRecProd struct {
 	Total uint
 }
 
-//CustomerRecProd is a struct for record model GetProductTotal
+//CustomerCash is a struct for record model GetTotalCash
 type CustomerCash struct {
 	Cash uint
+}
+
+type CustomerFrecuency struct {
+	ID       uint
+	Date     time.Time
+	UserID   string
+	Name     string
+	Quantity uint
+	Price    uint
+}
+
+type CustomerRankKL struct {
+	Rut  string
+	Name string
+	Cant uint
 }

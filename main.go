@@ -87,7 +87,8 @@ func main() {
 		v1.POST("/customersrank-k/:k", routes.GetRankCustomerK)
 		v1.POST("/customersrec-p/:id_customer", routes.GetProductTotal)
 		v1.POST("/customersrec-c/:id_customer", routes.GetTotalCash)
-		v1.POST("/customersrec-f/:id_customer")
+		v1.POST("/customersrec-f/:id_customer", routes.GetFrecuency)
+		v1.POST("/customersrank-p/:k/:l", routes.GetRankCustomerKL)
 
 		v1.POST("/purchasesrank-k/:k")
 		v1.POST("/purchasesrank-tag/:k/<tag>")
