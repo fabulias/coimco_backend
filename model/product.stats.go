@@ -12,9 +12,9 @@ func GetRankProductK(k string, in Date) ([]Product, error) {
 	return products, err
 }
 
-//GetRankProductCategory returns a ranking of products for category
-func GetRankProductCategory(category string, in Date) ([]InfoProduct, error) {
-	var products []InfoProduct
+//GetRankProductCategoryS returns a ranking of sale products for category
+func GetRankProductCategoryS(category string, in Date) ([]ProductRankCategory, error) {
+	var products []ProductRankCategory
 	err = dbmap.Raw("SELECT product.id, product.name , COUNT(product.id) AS "+
 		"sales FROM  sale_detail, sale, product WHERE sale.date>=? AND "+
 		"sale.date<=? AND sale_detail.sale_id= sale.id AND product.id="+
@@ -24,7 +24,19 @@ func GetRankProductCategory(category string, in Date) ([]InfoProduct, error) {
 	return products, err
 }
 
-//GetRankProductCategory returns a ranking of products for brand
+//GetRankProductCategoryP returns a ranking of purchase products for category
+func GetRankProductCategoryP(category string, in Date) ([]ProductRankCategory, error) {
+	var products []ProductRankCategory
+	err = dbmap.Raw("SELECT product.id, product.name , COUNT(product.id) AS "+
+		"sales FROM  purchase_detail, purchase, product WHERE purchase.date>=? AND "+
+		"purchase.date<=? AND purchase_detail.purchase_id= purchase.id AND product.id="+
+		"purchase_detail.product_id AND product.category=? GROUP BY "+
+		"product.id ORDER BY sales DESC",
+		in.Start, in.End, category).Scan(&products).Error
+	return products, err
+}
+
+//GetRankProductBrand returns a ranking of products for brand
 func GetRankProductBrand(brand string, in Date) ([]InfoProduct, error) {
 	var products []InfoProduct
 	err = dbmap.Raw("SELECT product.id, product.name, COUNT(sale_detail."+

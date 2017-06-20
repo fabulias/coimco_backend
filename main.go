@@ -81,7 +81,8 @@ func main() {
 		// *** Admin and manager ***
 		// Stats
 		v1.POST("/productsrank-k/:k", routes.GetRankProductK)
-		v1.POST("/productsrank-c/:category", routes.GetRankProductCategory)
+		v1.POST("/productsrank-cs/:category", routes.GetRankProductCategoryS)
+		v1.POST("/productsrank-cp/:category", routes.GetRankProductCategoryP)
 		v1.POST("/productsrank-b/:brand", routes.GetRankProductBrand)
 
 		v1.POST("/customersrank-k/:k", routes.GetRankCustomerK)
@@ -90,13 +91,18 @@ func main() {
 		v1.POST("/customersrec-f/:id_customer", routes.GetFrecuency)
 		v1.POST("/customersrank-p/:k/:l", routes.GetRankCustomerKL)
 
-		v1.POST("/purchasesrank-k/:k")
-		v1.POST("/purchasesrank-tag/:k/<tag>")
-		v1.POST("/purchasesrank-time/:tag")
+		v1.POST("/purchasesrank-k/:k", routes.GetRankPurchasesK)
+		v1.POST("/purchasesrank-c/:k/<category>")
+		v1.POST("/purchasesrank-t/:t")
+
+		v1.POST("/providersrank-v/:k")
+		v1.POST("/providersrank-pp/:<id_provider>")
 
 		//Record
 		v1.POST("/productsrec/:id", routes.GetSalesProductIDRec)
 		v1.POST("/productsprice/:id", routes.GetProductPrice)
+
+		v1.POST("/purchasesrec-p/<id_product>")
 
 		v1.POST("/sales-total", routes.GetSales)
 

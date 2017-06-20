@@ -19,6 +19,12 @@ type InfoProduct struct {
 	Total uint
 }
 
+type ProductRankCategory struct {
+	ID    uint
+	Name  string
+	Sales uint
+}
+
 type ProductPrice struct {
 	Price uint
 	Date  time.Time
