@@ -155,6 +155,7 @@ func GetSalesProductIDRec(c *gin.Context) {
 //GetRankProductCategoryS make route to stats model
 func GetRankProductCategoryS(c *gin.Context) {
 	category := c.Param("category")
+	k := c.Param("k")
 	var in model.Date
 	err := c.BindJSON(&in)
 	if err != nil {
@@ -165,7 +166,7 @@ func GetRankProductCategoryS(c *gin.Context) {
 		}
 		c.JSON(http.StatusBadRequest, response)
 	} else {
-		products, err := model.GetRankProductCategoryS(category, in)
+		products, err := model.GetRankProductCategoryS(category, k, in)
 		if err != nil {
 			response := gin.H{
 				"status":  "error",
@@ -187,6 +188,7 @@ func GetRankProductCategoryS(c *gin.Context) {
 //GetRankProductCategoryP make route to stats model
 func GetRankProductCategoryP(c *gin.Context) {
 	category := c.Param("category")
+	k := c.Param("k")
 	var in model.Date
 	err := c.BindJSON(&in)
 	if err != nil {
@@ -197,7 +199,7 @@ func GetRankProductCategoryP(c *gin.Context) {
 		}
 		c.JSON(http.StatusBadRequest, response)
 	} else {
-		products, err := model.GetRankProductCategoryP(category, in)
+		products, err := model.GetRankProductCategoryP(category, k, in)
 		if err != nil {
 			response := gin.H{
 				"status":  "error",
@@ -219,6 +221,7 @@ func GetRankProductCategoryP(c *gin.Context) {
 //GetRankProductBrand make route to stats model
 func GetRankProductBrand(c *gin.Context) {
 	brand := c.Param("brand")
+	k := c.Param("k")
 	var in model.Date
 	err := c.BindJSON(&in)
 	if err != nil {
@@ -229,7 +232,7 @@ func GetRankProductBrand(c *gin.Context) {
 		}
 		c.JSON(http.StatusBadRequest, response)
 	} else {
-		products, err := model.GetRankProductBrand(brand, in)
+		products, err := model.GetRankProductBrand(brand, k, in)
 		if err != nil {
 			response := gin.H{
 				"status":  "error",
