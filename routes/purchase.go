@@ -63,3 +63,67 @@ func PostPurchase(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 	}
 }
+
+//GetRankPurchasesCP make route to stats model
+func GetRankPurchasesCP(c *gin.Context) {
+	category := c.Param("category")
+	k := c.Param("k")
+	var in model.Date
+	err := c.BindJSON(&in)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, response)
+	} else {
+		sales, err := model.GetRankPurchasesCP(category, k, in)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": err.Error(),
+			}
+			c.JSON(http.StatusBadRequest, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    sales,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
+	}
+}
+
+//GetRankPurchasesKT make route to stats model
+func GetRankPurchasesKT(c *gin.Context) {
+	t := c.Param("t")
+	k := c.Param("k")
+	if t == "" || k == "" {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": ErrorParams,
+		}
+		c.JSON(http.StatusBadRequest, response)
+	} else {
+		sales, err := model.GetRankPurchasesKT(t, k)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": err.Error(),
+			}
+			c.JSON(http.StatusBadRequest, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    sales,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
+	}
+}

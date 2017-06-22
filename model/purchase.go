@@ -9,3 +9,8 @@ type Purchase struct {
 	Date       time.Time `json:"date" binding:"required"`
 	ShipTime   time.Time `json:"shiptime" binding:"required"`
 }
+
+type PurchaseRankKT struct {
+	Name string
+	Days uint
+}
