@@ -54,9 +54,7 @@ func GetSales(c *gin.Context) {
 		c.JSON(http.StatusNotFound, response)
 	} else {
 		//Asking to model
-		res, count, err := model.GetSales(in)
-		//Updating X-Total-Count
-		c.Header(TotalCount, count)
+		res, err := model.GetSales(in)
 		//If length of sales is zero,
 		//is because no exist sales
 		if err != nil {

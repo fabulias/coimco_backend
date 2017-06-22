@@ -1,16 +1,11 @@
 package model
 
-import "strconv"
-
 //This function allow obtain products' resource.
-func GetProducts(limit, offset string) ([]Product, string) {
+func GetProducts() []Product {
 	var products []Product
-	var count int64
-	//Here obtain total length of table.
-	dbmap.Table("product").Count(&count)
-	//Here obtain the products previously selected.
-	dbmap.Limit(limit).Offset(offset).Find(&products)
-	return products, strconv.Itoa(int(count))
+	err = dbmap.Find(&products).Error
+	checkErr(err, selectFailed)
+	return products
 }
 
 //This function allow obtain product' resource for his id.

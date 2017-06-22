@@ -22,7 +22,7 @@ type InfoProduct struct {
 type ProductRankCategory struct {
 	ID    uint
 	Name  string
-	Sales uint
+	Total uint
 }
 
 type ProductPrice struct {

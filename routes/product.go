@@ -9,16 +9,10 @@ import (
 	"github.com/fabulias/coimco_backend/model"
 )
 
-//This route asking for products in a range, if not exists range,
-//limit and offset are 20 and 0 by default
+//This route asking for all products
 func GetProducts(c *gin.Context) {
-	//Creating limit and offset from query
-	limit := c.DefaultQuery(Limit, DefaultLimit)
-	offset := c.DefaultQuery(Offset, DefaultOffset)
 	//Asking to model
-	products, count := model.GetProducts(limit, offset)
-	//Updating X-Total-Count
-	c.Header(TotalCount, count)
+	products := model.GetProducts()
 	//If length of products is zero,
 	//is because no exist products
 	if checkSize(products) {

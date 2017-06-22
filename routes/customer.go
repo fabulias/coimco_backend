@@ -8,24 +8,10 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var (
-	Limit         = "limit"
-	Offset        = "offset"
-	DefaultLimit  = "20"
-	DefaultOffset = "0"
-	TotalCount    = "X-Total-Count"
-)
-
-//This route asking for customers in a range, if not exists range,
-//limit and offset are 20 and 0 by default
+//This route asking for all customers
 func GetCustomers(c *gin.Context) {
-	//Creating limit and offset from query
-	limit := c.DefaultQuery(Limit, DefaultLimit)
-	offset := c.DefaultQuery(Offset, DefaultOffset)
 	//Asking to model
-	customers, count := model.GetCustomers(limit, offset)
-	//Updating X-Total-Count
-	c.Header(TotalCount, count)
+	customers := model.GetCustomers()
 	//If length of customers is zero,
 	//is because no exist customers
 	if checkSize(customers) {

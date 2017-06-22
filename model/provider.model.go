@@ -1,18 +1,11 @@
 package model
 
-import "strconv"
-
 //This function allow obtain provider' resource.
-func GetProviders(limit, offset string) ([]Provider, string) {
+func GetProviders() []Provider {
 	var provider []Provider
-	var count int64
-	//Here obtain total length of table.
-	err = dbmap.Table("provider").Count(count).Error
-	checkErr(err, countFailed)
-	//Here obtain the provider previously selected.
-	err = dbmap.Offset(offset).Limit(limit).Find(&provider).Error
+	err = dbmap.Find(&provider).Error
 	checkErr(err, selectFailed)
-	return provider, strconv.Itoa(int(count))
+	return provider
 }
 
 //This function allow obtain provider' resource for his id.

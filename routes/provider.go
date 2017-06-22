@@ -7,16 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//This route asking for providers in a range, if not exists range,
-//limit and offset are 20 and 0 by default
+//This route asking for all providers
 func GetProviders(c *gin.Context) {
-	//Creating limit and offset from query
-	limit := c.DefaultQuery(Limit, DefaultLimit)
-	offset := c.DefaultQuery(Offset, DefaultOffset)
 	//Asking to model
-	providers, count := model.GetProviders(limit, offset)
-	//Updating X-Total-Count
-	c.Header(TotalCount, count)
+	providers := model.GetProviders()
 	//If length of providers is zero,
 	//is because no exist providers
 	if checkSize(providers) {

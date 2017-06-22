@@ -1,7 +1,5 @@
 package model
 
-import "strconv"
-
 //GetSalesID return sales from that user ID
 func GetSalesID(mail string, in Date) (TotalSales, error) {
 	var res TotalSales
@@ -13,13 +11,10 @@ func GetSalesID(mail string, in Date) (TotalSales, error) {
 }
 
 //GetSales return sales in a date range
-func GetSales(in Date) (TotalSales, string, error) {
-	var count int64
-	err = dbmap.Table("sale").Count(&count).Error
-	checkErr(err, countFailed)
+func GetSales(in Date) (TotalSales, error) {
 	var res TotalSales
 	err = dbmap.Raw("SELECT count(*), sum(sale_detail.price*sale_detail.quantity)"+
 		" FROM sale, sale_detail WHERE sale.date>=? AND sale.date<=? "+
 		"AND sale_detail.sale_id=sale.id", in.Start, in.End).Scan(&res).Error
-	return res, strconv.Itoa(int(count)), err
+	return res, err
 }
