@@ -29,3 +29,8 @@ type ProductPrice struct {
 	Price uint
 	Date  time.Time
 }
+
+type ProductPriceID struct {
+	Total uint
+	Date  time.Time
+}
