@@ -13,13 +13,19 @@ func GetRankPurchasesCP(category, k string, in Date) ([]ProductRankCategory, err
 	return products, err
 }
 
-//GetRankPurchasesKT returns a ranking of purchase of aproducts for category
-func GetRankPurchasesKT(t, k string) ([]PurchaseRankKT, error) {
-	var providers []PurchaseRankKT
-	err = dbmap.Raw("SELECT provider.name , date_part('day', purchase.ship_time)"+
-		" AS days FROM purchase, provider WHERE date_part('day',purchase.ship_time)<?"+
-		" AND provider.rut=purchase.provider_id GROUP BY provider.name,days  ORDER BY"+
-		" days LIMIT ?",
-		t, k).Scan(&providers).Error
-	return providers, err
+//GetRankPurchasesK return a rank of purchases in base a total cash
+func GetRankPurchasesK(k string, in Date) ([]PurchaseRankK, error) {
+	var purchases []PurchaseRankK
+	err = dbmap.Raw("SELECT provider.name AS provider_name, product.name AS "+
+		"product_name, purchase_detail.quantity, purchase_detail.price,"+
+		" SUM(purchase_detail.quantity*"+
+		"purchase_detail.price) AS total ,purchase.id AS purchase_id FROM "+
+		"provider, product, purchase, purchase_detail WHERE purchase.date >= ?"+
+		" AND purchase.date <= ? AND purchase.provider_id = provider.rut AND"+
+		" purchase_detail.purchase_id=purchase.id AND product.id="+
+		"purchase_detail.product_id GROUP BY provider.name, product.name, "+
+		"purchase_detail.quantity, purchase_detail.price, purchase.id ORDER"+
+		" BY total LIMIT ?",
+		in.Start, in.End, k).Scan(&purchases).Error
+	return purchases, err
 }

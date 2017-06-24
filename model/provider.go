@@ -5,10 +5,6 @@ type Provider struct {
 }
 
 type ProviderRankK struct {
-	ProviderName string "gorm:providerName"
-	ProductName  string "gorm:productName"
-	Quantity     uint
-	Price        uint
-	Total        uint
-	PurchaseID   uint "gorm:id_purchase"
+	Name string
+	Days float64
 }

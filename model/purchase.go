@@ -10,7 +10,11 @@ type Purchase struct {
 	ShipTime   time.Time `json:"shiptime" binding:"required"`
 }
 
-type PurchaseRankKT struct {
-	Name string
-	Days uint
+type PurchaseRankK struct {
+	ProviderName string //"gorm:providerName"
+	ProductName  string //"gorm:productName"
+	Quantity     uint
+	Price        uint
+	Total        uint
+	PurchaseID   uint //"gorm:id_purchase"
 }

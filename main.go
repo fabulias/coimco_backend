@@ -93,9 +93,8 @@ func main() {
 
 		v1.POST("/purchasesrank-k/:k", routes.GetRankPurchasesK)
 		v1.POST("/purchasesrank-cp/:k/:category", routes.GetRankPurchasesCP)
-		v1.POST("/purchasesrank-t/:k/:t", routes.GetRankPurchasesKT)
 
-		v1.POST("/providersrank-t/:k/:t")
+		v1.POST("/providersrank-k/:k", routes.GetRankProvidersK)
 		v1.POST("/providersrank-v/:k")
 		v1.POST("/providersrank-pp/:<id_provider>")
 
