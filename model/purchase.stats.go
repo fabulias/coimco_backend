@@ -25,7 +25,7 @@ func GetRankPurchasesK(k string, in Date) ([]PurchaseRankK, error) {
 		" purchase_detail.purchase_id=purchase.id AND product.id="+
 		"purchase_detail.product_id GROUP BY provider.name, product.name, "+
 		"purchase_detail.quantity, purchase_detail.price, purchase.id ORDER"+
-		" BY total LIMIT ?",
+		" BY total DESC LIMIT ?",
 		in.Start, in.End, k).Scan(&purchases).Error
 	return purchases, err
 }

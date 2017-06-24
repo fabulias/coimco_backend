@@ -98,16 +98,18 @@ func main() {
 		v1.POST("/providersrank-v/:k")
 		v1.POST("/providersrank-pp/:<id_provider>")
 
-		//Record
+		// Record
 		v1.POST("/productsrec/:id", routes.GetSalesProductIDRec)
 		v1.POST("/productsprice/:id", routes.GetProductPrice)
 
-		v1.POST("/purchasesrec-p/<id_product>")
+		v1.POST("/purchasesrec-p/:id_product")
 
 		v1.POST("/sales-total", routes.GetSales)
 
 		// *** Seller ***
-		//Record
+		// Stats
+
+		// Record
 		v1.POST("/sales/:mail", routes.GetSalesID)
 	}
 	r.Run(":" + port)
