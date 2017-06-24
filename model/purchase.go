@@ -18,3 +18,9 @@ type PurchaseRankK struct {
 	Total        uint
 	PurchaseID   uint //"gorm:id_purchase"
 }
+
+type PurchasesProductRec struct {
+	Name  string
+	Price uint
+	Date  time.Time
+}
