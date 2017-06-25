@@ -151,7 +151,7 @@ func GetRankProviderK(c *gin.Context) {
 	}
 }
 
-//GetRankProvider make route to stats model
+//GetRankProviderPP make route to stats model
 func GetRankProviderPP(c *gin.Context) {
 	k := c.Param("k")
 	id := c.Param("id_provider")
@@ -166,6 +166,38 @@ func GetRankProviderPP(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 	} else {
 		products, err := model.GetRankProviderPP(k, id, in)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": err.Error(),
+			}
+			c.JSON(http.StatusBadRequest, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    products,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
+	}
+}
+
+//GetRankProviderVariety make route to stats model
+func GetRankProviderVariety(c *gin.Context) {
+	k := c.Param("k")
+	var in model.Date
+	err := c.BindJSON(&in)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, response)
+	} else {
+		products, err := model.GetRankProviderVariety(k, in)
 		if err != nil {
 			response := gin.H{
 				"status":  "error",

@@ -248,3 +248,35 @@ func GetRankCustomerKL(c *gin.Context) {
 		}
 	}
 }
+
+//GetRankCustomerVariety make route to stats model
+func GetRankCustomerVariety(c *gin.Context) {
+	k := c.Param("k")
+	var in model.Date
+	err := c.BindJSON(&in)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, response)
+	} else {
+		customers, err := model.GetRankCustomerVariety(k, in)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": err.Error(),
+			}
+			c.JSON(http.StatusBadRequest, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    customers,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
+	}
+}

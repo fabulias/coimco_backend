@@ -251,9 +251,9 @@ func GetRankProductBrand(c *gin.Context) {
 	}
 }
 
-//GetProductPrice make route to record model
-func GetProductPrice(c *gin.Context) {
-	id := c.Param("id")
+//GetRankProfitability make route to stats model
+func GetRankProfitability(c *gin.Context) {
+	k := c.Param("k")
 	var in model.Date
 	err := c.BindJSON(&in)
 	if err != nil {
@@ -264,7 +264,7 @@ func GetProductPrice(c *gin.Context) {
 		}
 		c.JSON(http.StatusBadRequest, response)
 	} else {
-		sales, err := model.GetProductPrice(id, in)
+		products, err := model.GetRankProfitability(k, in)
 		if err != nil {
 			response := gin.H{
 				"status":  "error",
@@ -275,7 +275,39 @@ func GetProductPrice(c *gin.Context) {
 		} else {
 			response := gin.H{
 				"status":  "success",
-				"data":    sales,
+				"data":    products,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
+	}
+}
+
+//GetRankProductPP make route to stats model
+func GetRankProductPP(c *gin.Context) {
+	id := c.Param("id_product")
+	var in model.Date
+	err := c.BindJSON(&in)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, response)
+	} else {
+		products, err := model.GetRankProductPP(id, in)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": err.Error(),
+			}
+			c.JSON(http.StatusBadRequest, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    products,
 				"message": nil,
 			}
 			c.JSON(http.StatusOK, response)

@@ -16,8 +16,8 @@ type InfoDashboard struct {
 }
 
 type SaleRankK struct {
-	Name string
 	ID   uint
+	Name string
 	Cash uint
 }
 
@@ -31,4 +31,14 @@ type SaleRankProduct struct {
 	ID   uint
 	Cash uint
 	Name string
+}
+
+type SaleRankArea struct {
+	Name string
+	Cash uint
+}
+
+type SaleProductPrice struct {
+	Date  time.Time
+	Price uint
 }

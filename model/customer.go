@@ -39,3 +39,8 @@ type CustomerRankKL struct {
 	Name string
 	Cant uint
 }
+
+type CustomerRankVariety struct {
+	Name     string
+	Quantity uint
+}

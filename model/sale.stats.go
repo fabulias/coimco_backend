@@ -36,3 +36,15 @@ func GetRankSalesProduct(k string, in Date) ([]SaleRankProduct, error) {
 		in.Start, in.End, k).Scan(&products).Error
 	return products, err
 }
+
+//GetRankSalesArea returns a ranking of sales by customer area
+func GetRankSalesArea(k string, in Date) ([]SaleRankArea, error) {
+	var areas []SaleRankArea
+	err = dbmap.Raw("SELECT tag.name, SUM(sale_detail.price*sale_detail.quantity)"+
+		" AS cash FROM tag, tag_customer, sale, sale_detail WHERE tag_customer."+
+		"tag_id=tag.id AND sale.customer_id=tag_customer.customer_id AND "+
+		"sale.date >= ? AND sale.date <= ? AND sale_detail.sale_id = sale.id"+
+		" GROUP BY tag.name ORDER BY cash DESC limit ?",
+		in.Start, in.End, k).Scan(&areas).Error
+	return areas, err
+}

@@ -18,3 +18,14 @@ func GetSales(in Date) (TotalSales, error) {
 		"AND sale_detail.sale_id=sale.id", in.Start, in.End).Scan(&res).Error
 	return res, err
 }
+
+//GetSalesProduct returns history product's price on sales
+func GetSalesProduct(id string, in Date) ([]SaleProductPrice, error) {
+	var res []SaleProductPrice
+	err = dbmap.Raw(" SELECT sale_detail.price, sale.date FROM sale_detail,"+
+		" sale WHERE sale.date >= ? AND sale.date <= ? AND sale_detail.sale_id"+
+		"=sale.id AND sale_detail.product_id= ? GROUP BY sale.date, "+
+		"sale_detail.price ORDER BY sale.date",
+		in.Start, in.End, id).Scan(&res).Error
+	return res, err
+}

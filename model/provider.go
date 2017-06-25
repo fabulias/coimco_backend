@@ -13,3 +13,8 @@ type ProviderRankPP struct {
 	Name  string
 	Price uint
 }
+
+type ProviderRankVariety struct {
+	Name     string
+	Quantity uint
+}

@@ -12,7 +12,7 @@ func GetRankProductK(k string, in Date) ([]Product, error) {
 	return products, err
 }
 
-//GetRankProductCategoryS returns a ranking of sale products for category
+//GetRankProductCategoryS returns a ranking of sale products by category
 func GetRankProductCategoryS(category, k string, in Date) ([]ProductRankCategory, error) {
 	var products []ProductRankCategory
 	err = dbmap.Raw("SELECT product.id, product.name , COUNT(product.id) AS "+
@@ -25,7 +25,7 @@ func GetRankProductCategoryS(category, k string, in Date) ([]ProductRankCategory
 	return products, err
 }
 
-//GetRankProductCategoryP returns a ranking of purchase products for category
+//GetRankProductCategoryP returns a ranking of purchase products by category
 func GetRankProductCategoryP(category, k string, in Date) ([]ProductRankCategory, error) {
 	var products []ProductRankCategory
 	err = dbmap.Raw("SELECT product.id, product.name , SUM(purchase_detail.quantity*purchase_detail.price) AS "+
@@ -37,7 +37,7 @@ func GetRankProductCategoryP(category, k string, in Date) ([]ProductRankCategory
 	return products, err
 }
 
-//GetRankProductBrand returns a ranking of products for brand
+//GetRankProductBrand returns a ranking of products by brand
 func GetRankProductBrand(brand, k string, in Date) ([]InfoProduct, error) {
 	var products []InfoProduct
 	err = dbmap.Raw("SELECT product.id, product.name, COUNT(sale_detail."+
@@ -47,5 +47,34 @@ func GetRankProductBrand(brand, k string, in Date) ([]InfoProduct, error) {
 		"sale_detail.product_id=product.id GROUP BY product.id ORDER BY total DESC"+
 		" LIMIT ?",
 		in.Start, in.End, brand, k).Scan(&products).Error
+	return products, err
+}
+
+//GetRankProfitability returns a ranking of products by profitability
+func GetRankProfitability(k string, in Date) ([]ProductRankProfitability, error) {
+	var products []ProductRankProfitability
+	err = dbmap.Raw("SELECT avg_product.sale-avg_product.purchase AS rent,"+
+		" avg_product.name  FROM (SELECT AVG(purchase_detail.price) AS purchase,"+
+		" AVG(sale_detail.price) AS sale , product.id, product.name FROM"+
+		" product, sale_detail, purchase_detail, purchase, sale WHERE"+
+		" purchase.date>=? AND purchase.date<=? AND purchase_detail.purchase_id"+
+		" = purchase.id AND sale.date >= ? AND sale.date<= ? AND"+
+		" sale_detail.sale_id=sale.id AND purchase_detail.purchase_id=purchase.id"+
+		" AND sale_detail.product_id=product.id AND purchase_detail.product_id"+
+		"=product.id GROUP BY product.name, product.id) AS avg_product"+
+		" ORDER BY rent DESC LIMIT ?",
+		in.Start, in.End, in.Start, in.End, k).Scan(&products).Error
+	return products, err
+}
+
+//GetRankProductPP returns a ranking of products by provider and its price
+func GetRankProductPP(id string, in Date) ([]ProductRankProviderPrice, error) {
+	var products []ProductRankProviderPrice
+	err = dbmap.Raw("SELECT provider.name, purchase_detail.price FROM provider,"+
+		" purchase, purchase_detail WHERE purchase.date>=? AND purchase.date<=?"+
+		" AND purchase_detail.product_id=? AND purchase.id="+
+		"purchase_detail.purchase_id AND provider.rut=purchase.provider_id GROUP"+
+		" BY provider.name, purchase_detail.price ORDER BY purchase_detail.price DESC",
+		in.Start, in.End, id).Scan(&products).Error
 	return products, err
 }

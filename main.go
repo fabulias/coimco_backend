@@ -84,23 +84,28 @@ func main() {
 		v1.POST("/productsrank-cs/:k/:category", routes.GetRankProductCategoryS)
 		v1.POST("/productsrank-cp/:k/:category", routes.GetRankProductCategoryP)
 		v1.POST("/productsrank-b/:k/:brand", routes.GetRankProductBrand)
+		v1.POST("/productsrank-pp/:id_product", routes.GetRankProductPP)
+		v1.POST("/productsrank-r/:k", routes.GetRankProfitability)
 
 		v1.POST("/customersrank-k/:k", routes.GetRankCustomerK)
 		v1.POST("/customersrank-p/:k/:l", routes.GetRankCustomerKL)
+		v1.POST("/customersrank-v/:k", routes.GetRankCustomerVariety)
 
 		v1.POST("/purchasesrank-k/:k", routes.GetRankPurchasesK)
 		v1.POST("/purchasesrank-cp/:k/:category", routes.GetRankPurchasesCP)
+		v1.POST("/purchasesrank-p/:k")
 
 		v1.POST("/providersrank-k/:k", routes.GetRankProviderK)
-		v1.POST("/providersrank-v/:k") //PENDING
+		v1.POST("/providersrank-v/:k", routes.GetRankProviderVariety)
 		v1.POST("/providersrank-pp/:k/:id_provider", routes.GetRankProviderPP)
 
 		v1.POST("/salesrank-k/:k", routes.GetRankSalesK)
 		v1.POST("/salesrank-c/:k/:category", routes.GetRankSalesCategory)
 		v1.POST("/salesrank-p/:k", routes.GetRankSalesProduct)
+		v1.POST("/salesrank-r/:k", routes.GetRankSalesArea)
+
 		// Record
 		v1.POST("/productsrec/:id", routes.GetSalesProductIDRec)
-		v1.POST("/productsprice/:id", routes.GetProductPrice)
 
 		v1.POST("/customersrec-p/:id_customer", routes.GetProductTotal)
 		v1.POST("/customersrec-c/:id_customer", routes.GetTotalCash)
@@ -108,8 +113,10 @@ func main() {
 
 		v1.POST("/purchasesrec-p/:id_product", routes.GetPurchasesProduct)
 
-		v1.POST("/salesrec-p/:id_product")
+		v1.POST("/salesrec-p/:id_product", routes.GetSalesProduct)
 		v1.POST("/sales-total", routes.GetSales)
+
+		// Dashboard
 
 		// *** Seller ***
 		// Stats

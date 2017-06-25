@@ -25,12 +25,17 @@ type ProductRankCategory struct {
 	Total uint
 }
 
-type ProductPrice struct {
-	Price uint
-	Date  time.Time
-}
-
 type ProductPriceID struct {
 	Total uint
 	Date  time.Time
+}
+
+type ProductRankProfitability struct {
+	Rent float64
+	Name string
+}
+
+type ProductRankProviderPrice struct {
+	Name  string
+	Price uint
 }

@@ -26,3 +26,14 @@ func GetRankCustomerKL(k, l string, in Date) ([]CustomerRankKL, error) {
 		in.Start, in.End, l, in.Start, in.End, k).Scan(&customers).Error
 	return customers, err
 }
+
+//GetRankCustomerVariety return a rank of K customers of L top products
+func GetRankCustomerVariety(k string, in Date) ([]CustomerRankVariety, error) {
+	var customers []CustomerRankVariety
+	err = dbmap.Raw("SELECT customer.name, COUNT(sale_detail.product_id) as"+
+		" quantity FROM customer, sale_detail, sale WHERE sale.date>=? AND "+
+		"sale.date<=? AND customer.rut=sale.customer_id AND sale_detail.sale_id"+
+		"=sale.id GROUP BY customer.name ORDER BY quantity DESC LIMIT ?",
+		in.Start, in.End, k).Scan(&customers).Error
+	return customers, err
+}
