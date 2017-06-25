@@ -11,4 +11,6 @@ var (
 	LoginError              = "Mail or pass aren't correct"
 	TokenError              = "Error creating token"
 	ErrorHashPassword       = "Error hashing password"
+	DashBoardErrFirst       = "Error in first query"
+	DashBoardErrSecond      = "Error in second query"
 )

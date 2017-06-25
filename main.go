@@ -118,13 +118,14 @@ func main() {
 		v1.POST("/salesrec-p/:id_product", routes.GetSalesProduct)
 		v1.POST("/sales-total", routes.GetSales)
 
-		// Dashboard
-
 		// *** Seller ***
 		// Stats
-
+		v1.POST("/sellerproductsrank-k/:seller")
 		// Record
 		v1.POST("/sales/:mail", routes.GetSalesID)
+
+		// *** Dashboard ***
+		v1.POST("/dashboard-info/:role/:id_seller", routes.GetInformationDashboard)
 	}
 	r.Run(":" + port)
 }
