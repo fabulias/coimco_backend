@@ -3,7 +3,6 @@ package routes
 import (
 	"github.com/fabulias/coimco_backend/model"
 	"github.com/gin-gonic/gin"
-	_ "github.com/lib/pq"
 
 	"net/http"
 	"strings"

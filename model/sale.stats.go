@@ -29,7 +29,7 @@ func GetRankSalesCategory(k, category string, in Date) ([]SaleRankCategory, erro
 func GetRankSalesProduct(k string, in Date) ([]SaleRankProduct, error) {
 	var products []SaleRankProduct
 	err = dbmap.Raw("SELECT SUM(sale_detail.quantity*sale_detail.price) AS cash,"+
-		" product.id, product.name FROM product, sale_detail, sale WHERE"+
+		" product.name FROM product, sale_detail, sale WHERE"+
 		" sale.date>=? AND sale.date<=? AND sale_detail.sale_id=sale.id AND"+
 		" product.id=sale_detail.product_id GROUP BY product.name,"+
 		" product.id ORDER BY cash DESC LIMIT ?",

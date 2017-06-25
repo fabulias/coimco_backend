@@ -28,7 +28,6 @@ type SaleRankCategory struct {
 }
 
 type SaleRankProduct struct {
-	ID   uint
 	Cash uint
 	Name string
 }

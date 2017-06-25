@@ -29,3 +29,15 @@ func GetRankPurchasesK(k string, in Date) ([]PurchaseRankK, error) {
 		in.Start, in.End, k).Scan(&purchases).Error
 	return purchases, err
 }
+
+//GetRankPurchasesProduct returns a ranking of products bought
+func GetRankPurchasesProduct(k string, in Date) ([]PurchaseRankProduct, error) {
+	var products []PurchaseRankProduct
+	err = dbmap.Raw("SELECT SUM(purchase_detail.quantity) as cash, product.name"+
+		" FROM product, purchase_detail, purchase WHERE purchase.date >= ? AND"+
+		" purchase.date <= ? AND purchase_detail.purchase_id = purchase.id AND"+
+		" product.id = purchase_detail.product_id GROUP BY product.name ORDER"+
+		" BY cash DESC LIMIT ?",
+		in.Start, in.End, k).Scan(&products).Error
+	return products, err
+}

@@ -5,7 +5,6 @@ import (
 
 	"github.com/fabulias/coimco_backend/model"
 	"github.com/gin-gonic/gin"
-	_ "github.com/lib/pq"
 )
 
 //This route asking for all customers

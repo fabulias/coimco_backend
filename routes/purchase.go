@@ -3,7 +3,6 @@ package routes
 import (
 	"github.com/fabulias/coimco_backend/model"
 	"github.com/gin-gonic/gin"
-	_ "github.com/lib/pq"
 
 	"net/http"
 )
@@ -111,6 +110,38 @@ func GetPurchasesProduct(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 	} else {
 		sales, err := model.GetPurchasesProduct(id, in)
+		if err != nil {
+			response := gin.H{
+				"status":  "error",
+				"data":    nil,
+				"message": err.Error(),
+			}
+			c.JSON(http.StatusBadRequest, response)
+		} else {
+			response := gin.H{
+				"status":  "success",
+				"data":    sales,
+				"message": nil,
+			}
+			c.JSON(http.StatusOK, response)
+		}
+	}
+}
+
+//GetRankPurchasesProduct make route to stats model
+func GetRankPurchasesProduct(c *gin.Context) {
+	k := c.Param("k")
+	var in model.Date
+	err := c.BindJSON(&in)
+	if err != nil {
+		response := gin.H{
+			"status":  "error",
+			"data":    nil,
+			"message": err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, response)
+	} else {
+		sales, err := model.GetRankPurchasesProduct(k, in)
 		if err != nil {
 			response := gin.H{
 				"status":  "error",

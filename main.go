@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var StatusOK = 200
+
 func checkErr(err error, msg string) {
 	if err != nil {
 		log.Fatalln(msg)
@@ -25,7 +27,7 @@ func Cors() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
 
 		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(200)
+			c.AbortWithStatus(StatusOK)
 		} else {
 			c.Next()
 		}
@@ -94,7 +96,7 @@ func main() {
 
 		v1.POST("/purchasesrank-k/:k", routes.GetRankPurchasesK)
 		v1.POST("/purchasesrank-cp/:k/:category", routes.GetRankPurchasesCP)
-		v1.POST("/purchasesrank-p/:k")
+		v1.POST("/purchasesrank-p/:k", routes.GetRankPurchasesProduct)
 
 		v1.POST("/providersrank-k/:k", routes.GetRankProviderK)
 		v1.POST("/providersrank-v/:k", routes.GetRankProviderVariety)

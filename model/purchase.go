@@ -24,3 +24,8 @@ type PurchasesProductRec struct {
 	Price uint
 	Date  time.Time
 }
+
+type PurchaseRankProduct struct {
+	Cash uint
+	Name string
+}
