@@ -1,7 +1,5 @@
 package model
 
-import "log"
-
 //GetInformationDashboard returns sales from product ID
 func GetInformationDashboard(role, id string) (DashBoardInformation, error, error) {
 	var information DashBoardInformation
@@ -9,7 +7,6 @@ func GetInformationDashboard(role, id string) (DashBoardInformation, error, erro
 	var err2 error = nil
 	//If you need information to dashboard seller
 	if role == "0" {
-		log.Println("Seller query")
 		err1 = dbmap.Raw("SELECT cash_sales.sale_total, SUM(sale_detail.quantity"+
 			"*sale_detail.price) as last_sale FROM sale, sale_detail, ( SELECT "+
 			"SUM(sale_detail.quantity*sale_detail.price) as sale_total, "+
@@ -19,7 +16,6 @@ func GetInformationDashboard(role, id string) (DashBoardInformation, error, erro
 			" AS cash_sales WHERE sale_detail.sale_id=cash_sales.id "+
 			"GROUP BY sale_total", id).Scan(&information).Error
 	} else {
-		log.Println("Admin and manager querys")
 		//This case is to admin and manager
 		err1 = dbmap.Raw("SELECT cash_purchase.purchase_total, " +
 			"SUM(purchase_detail.quantity*purchase_detail.price) as last_purchase" +

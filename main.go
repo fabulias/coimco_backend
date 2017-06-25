@@ -120,12 +120,23 @@ func main() {
 
 		// *** Seller ***
 		// Stats
-		v1.POST("/sellerproductsrank-k/:seller")
+		v1.POST("/sellerproductsrank-k/:k/:seller")
+		v1.POST("/sellerproductsrank-c/:category")
+		v1.POST("/sellerproductsrank-b/:brand")
+
+		v1.POST("/sellercustomer")
+		v1.POST("/sellerc")
+		v1.POST("/seller")
+
+		v1.POST("/sellersalesrank-k/:k")
+		v1.POST("/sellersalesrank-c/:k/:category")
+		v1.POST("/sellersalesrank-p/:k")
+
 		// Record
 		v1.POST("/sales/:mail", routes.GetSalesID)
 
 		// *** Dashboard ***
-		v1.POST("/dashboard-info/:role/:id_seller", routes.GetInformationDashboard)
+		v1.GET("/dashboard-info/:role/:id_seller", routes.GetInformationDashboard)
 	}
 	r.Run(":" + port)
 }
