@@ -14,3 +14,21 @@ type InfoDashboard struct {
 	Count uint
 	Sum   uint
 }
+
+type SaleRankK struct {
+	Name string
+	ID   uint
+	Cash uint
+}
+
+type SaleRankCategory struct {
+	ID   uint
+	Name string
+	Cash uint
+}
+
+type SaleRankProduct struct {
+	ID   uint
+	Cash uint
+	Name string
+}

@@ -95,6 +95,9 @@ func main() {
 		v1.POST("/providersrank-v/:k") //PENDING
 		v1.POST("/providersrank-pp/:k/:id_provider", routes.GetRankProviderPP)
 
+		v1.POST("/salesrank-k/:k", routes.GetRankSalesK)
+		v1.POST("/salesrank-c/:k/:category", routes.GetRankSalesCategory)
+		v1.POST("/salesrank-p/:k", routes.GetRankSalesProduct)
 		// Record
 		v1.POST("/productsrec/:id", routes.GetSalesProductIDRec)
 		v1.POST("/productsprice/:id", routes.GetProductPrice)
@@ -105,6 +108,7 @@ func main() {
 
 		v1.POST("/purchasesrec-p/:id_product", routes.GetPurchasesProduct)
 
+		v1.POST("/salesrec-p/:id_product")
 		v1.POST("/sales-total", routes.GetSales)
 
 		// *** Seller ***
