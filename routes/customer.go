@@ -184,9 +184,9 @@ func GetTotalCash(c *gin.Context) {
 	}
 }
 
-//GetFrecuency make route to record model
-func GetFrecuency(c *gin.Context) {
-	id := c.Param("id_customer")
+//GetRankFrequency make route to record model
+func GetRankFrequency(c *gin.Context) {
+	k := c.Param("k")
 	var in model.Date
 	err := c.BindJSON(&in)
 	if err != nil {
@@ -197,7 +197,7 @@ func GetFrecuency(c *gin.Context) {
 		}
 		c.JSON(http.StatusBadRequest, response)
 	} else {
-		total_cash, err := model.GetFrecuency(id, in)
+		total_cash, err := model.GetRankFrequency(k, in)
 		if err != nil {
 			response := gin.H{
 				"status":  "error",

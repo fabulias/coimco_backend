@@ -22,14 +22,13 @@ func GetTotalCash(id string, in Date) (CustomerCash, error) {
 	return total_cash, err
 }
 
-//GetFrecuency returns the frecuency sales for a client
-func GetFrecuency(id string, in Date) ([]CustomerFrecuency, error) {
+//GetRankFrequency returns the frecuency sales for all clients
+func GetRankFrequency(k string, in Date) ([]CustomerFrecuency, error) {
+	duration := in.End.Sub(in.Start)
 	var customer_frecuency []CustomerFrecuency
-	err = dbmap.Raw("SELECT sale.id, sale.date, sale.user_id, product.name, "+
-		"sale_detail.quantity, sale_detail.price FROM sale, sale_detail, product,"+
-		" customer WHERE customer.rut=? AND sale.customer_id=customer.rut"+
-		" AND sale.date >=? AND sale.date <= ? AND "+
-		"sale_detail.sale_id=sale.id AND product.id=sale_detail.product_id",
-		id, in.Start, in.End).Scan(&customer_frecuency).Error
+	err = dbmap.Raw("SELECT COUNT(sale.customer_id)::float/(?::float) as freq,"+
+		" sale.customer_id as name FROM sale"+
+		" GROUP BY customer_id ORDER BY freq DESC LIMIT ?",
+		duration.Hours()/24/30, k).Scan(&customer_frecuency).Error
 	return customer_frecuency, err
 }

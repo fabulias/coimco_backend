@@ -1,7 +1,5 @@
 package model
 
-import "time"
-
 //Customer represents the clients in the application
 type Customer struct {
 	Agent
@@ -26,12 +24,8 @@ type CustomerCash struct {
 }
 
 type CustomerFrecuency struct {
-	ID       uint
-	Date     time.Time
-	UserID   string
-	Name     string
-	Quantity uint
-	Price    uint
+	Name string
+	Freq float64
 }
 
 type CustomerRankKL struct {
