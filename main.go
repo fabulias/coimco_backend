@@ -121,12 +121,12 @@ func main() {
 		// *** Seller ***
 		// Stats
 		v1.POST("/sellerproductsrank-k/:k/:seller", routes.GetRankSellerProductK)
-		v1.POST("/sellerproductsrank-c/:category", routes.GetRankSellerProductC)
-		v1.POST("/sellerproductsrank-b/:brand", routes.GetRankSellerProductB)
+		v1.POST("/sellerproductsrank-c/:k/:seller/:category", routes.GetRankSellerProductC)
+		v1.POST("/sellerproductsrank-b/:k/:seller/:brand", routes.GetRankSellerProductB)
 
 		v1.POST("/sellercustomersrank-k/:k/:seller", routes.GetRankSellerCustomerK)
-		v1.POST("/sellercustomersrank-p/:id_customer/:seller", routes.GetRankSellerCustomerP)
-		v1.POST("/sellercustomersrank-l/:seller", routes.GetRankSellerCustomerL)
+		v1.POST("/sellercustomersrank-p/:k/:id_customer/:seller", routes.GetRankSellerCustomerP)
+		v1.POST("/sellercustomersrank-l/:k/:l/:seller", routes.GetRankSellerCustomerL)
 
 		v1.POST("/sellersalesrank-k/:k/:seller", routes.GetRankSellerSalesK)
 		v1.POST("/sellersalesrank-c/:k/:category/:seller", routes.GetRankSellerSalesC)

@@ -162,7 +162,7 @@ func GetRankSellerCustomerP(c *gin.Context) {
 		}
 		c.JSON(http.StatusBadRequest, resp)
 	} else {
-		products, err := model.GetRankSellerCustomerP(k, id, in)
+		products, err := model.GetRankSellerCustomerP(k, seller, id, in)
 		if err != nil {
 			resp := gin.H{
 				"status":  "error",
