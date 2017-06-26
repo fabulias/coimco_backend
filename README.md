@@ -53,7 +53,7 @@ Add additional notes about how to deploy this on a live system
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
 
-## Authors
+## Author
 
 * **Farid Abulias** - *Initial work* - [Fabulias](https://github.com/fabulias)
 
