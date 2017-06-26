@@ -16,5 +16,7 @@ type ProviderRankPP struct {
 
 type ProviderRankVariety struct {
 	Name     string
+	Mail     string
+	Phone    string
 	Quantity uint
 }

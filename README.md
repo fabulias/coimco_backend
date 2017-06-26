@@ -21,10 +21,10 @@ A step by step series of examples that tell you have to get a development env ru
 Say what the step will be
 
 ```
-$ git clone git@giteit.udp.cl:fabulias/coimco.git
-$ cd coimco
+$ git clone https://github.com/fabulias/coimco_backend.git
+$ cd coimco_backend
 $ go install ./...
-$ $GOPATH/bin/coimco
+$ $GOPATH/bin/coimco_backend
 ```
 
 ## Running the tests
@@ -47,6 +47,7 @@ Add additional notes about how to deploy this on a live system
 
 * [Gin](https://github.com/gin-gonic/gin) - The HTTP web framework used
 * [Govendor](https://github.com/kardianos/govendor) - Dependency Management
+* [Heroku](https://heroku.com) - Cloud Platform
 
 ## Versioning
 
@@ -55,8 +56,6 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Authors
 
 * **Farid Abulias** - *Initial work* - [Fabulias](https://github.com/fabulias)
-* **Maximiliano Beltrán** - *Initial work* - [Yxam](https://github.com/yxam)
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 

@@ -26,11 +26,12 @@ func GetRankProviderPP(k, id string, in Date) ([]ProviderRankPP, error) {
 //GetRankProviderVariety returns rank of provider by variety
 func GetRankProviderVariety(k string, in Date) ([]ProviderRankVariety, error) {
 	var providers []ProviderRankVariety
-	err = dbmap.Raw("SELECT provider.name, COUNT(purchase_detail.product_id) AS"+
+	err = dbmap.Raw("SELECT provider.name, provider.phone, provider.mail,"+
+		" COUNT(purchase_detail.product_id) AS"+
 		" quantity FROM provider, purchase_detail, purchase WHERE purchase.date"+
 		" >= ? AND purchase.date <= ? AND provider.rut = purchase.provider_id AND"+
-		" purchase_detail.purchase_id = purchase.id GROUP BY provider.name ORDER"+
-		" BY quantity DESC LIMIT ?",
+		" purchase_detail.purchase_id = purchase.id GROUP BY provider.name,"+
+		" provider.phone, provider.mail ORDER BY quantity DESC LIMIT ?",
 		in.Start, in.End, k).Scan(&providers).Error
 	return providers, err
 }
