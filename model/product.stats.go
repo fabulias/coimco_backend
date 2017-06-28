@@ -1,8 +1,8 @@
 package model
 
 //GetRankProductK returns a ranking of products
-func GetRankProductK(k string, in Date) ([]Product, error) {
-	var products []Product
+func GetRankProductK(k string, in Date) ([]ProductK, error) {
+	var products []ProductK
 	err = dbmap.Raw("SELECT product.*, cant FROM product, (SELECT SUM(sale_detail."+
 		"quantity) AS cant, sale_detail.product_id FROM sale_detail, sale WHERE "+
 		"sale.date>=? AND sale.date<=? AND "+
