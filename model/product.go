@@ -39,3 +39,8 @@ type ProductRankProviderPrice struct {
 	Name  string
 	Price uint
 }
+
+type ProductK struct {
+	Product
+	Cant uint
+}
