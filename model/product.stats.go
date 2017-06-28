@@ -28,11 +28,12 @@ func GetRankProductCategoryS(category, k string, in Date) ([]ProductRankCategory
 //GetRankProductCategoryP returns a ranking of purchase products by category
 func GetRankProductCategoryP(category, k string, in Date) ([]ProductRankCategory, error) {
 	var products []ProductRankCategory
-	err = dbmap.Raw("SELECT product.id, product.name , SUM(purchase_detail.quantity*purchase_detail.price) AS "+
-		"total FROM  purchase_detail, purchase, product, (SELECT * FROM product WHERE category=?) AS products "+
-		"WHERE purchase.date>=? AND purchase.date<=? AND purchase_detail.purchase_id= purchase.id AND products.id="+
-		"purchase_detail.product_id GROUP BY product.id ORDER BY total DESC"+
-		" LIMIT ?",
+	err = dbmap.Raw("SELECT product.id, product.name, SUM(purchase_detail."+
+		"quantity*purchase_detail.price) AS total FROM  purchase_detail, "+
+		"purchase, product WHERE product.category=? AND purchase.date>=? AND"+
+		" purchase.date<=? AND purchase_detail.purchase_id= purchase.id AND"+
+		" purchase_detail.product_id=product.id GROUP BY product.id "+
+		"ORDER BY total DESC LIMIT ?",
 		category, in.Start, in.End, k).Scan(&products).Error
 	return products, err
 }
