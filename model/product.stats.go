@@ -71,11 +71,11 @@ func GetRankProfitability(k string, in Date) ([]ProductRankProfitability, error)
 //GetRankProductPP returns a ranking of products by provider and its price
 func GetRankProductPP(id string, in Date) ([]ProductRankProviderPrice, error) {
 	var products []ProductRankProviderPrice
-	err = dbmap.Raw("SELECT provider.name, purchase_detail.price FROM provider,"+
+	err = dbmap.Raw("SELECT provider.name, provider.mail, provider.phone, purchase_detail.price FROM provider,"+
 		" purchase, purchase_detail WHERE purchase.date>=? AND purchase.date<=?"+
 		" AND purchase_detail.product_id=? AND purchase.id="+
 		"purchase_detail.purchase_id AND provider.rut=purchase.provider_id GROUP"+
-		" BY provider.name, purchase_detail.price ORDER BY purchase_detail.price DESC",
+		" BY provider.name, purchase_detail.price, provider.mail, provider.phone ORDER BY purchase_detail.price DESC",
 		in.Start, in.End, id).Scan(&products).Error
 	return products, err
 }

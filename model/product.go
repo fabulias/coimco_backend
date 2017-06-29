@@ -38,6 +38,8 @@ type ProductRankProfitability struct {
 type ProductRankProviderPrice struct {
 	Name  string
 	Price uint
+	Mail  string
+	Phone string
 }
 
 type ProductK struct {
