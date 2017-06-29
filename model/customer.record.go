@@ -28,7 +28,7 @@ func GetRankFrequency(k string, in Date) ([]CustomerFrecuency, error) {
 	var customer_frecuency []CustomerFrecuency
 	err = dbmap.Raw("SELECT COUNT(sale.customer_id)::float/(?::float) as freq,"+
 		" customer.name as name FROM sale, customer"+
-		" GROUP BY customer_id ORDER BY freq DESC LIMIT ?",
+		" GROUP BY customer_id, customer.name ORDER BY freq DESC LIMIT ?",
 		duration.Hours()/24/30, k).Scan(&customer_frecuency).Error
 	return customer_frecuency, err
 }
