@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//PostTagCustomer makes route to model
 func PostTagCustomer(c *gin.Context) {
 	var in model.TagCustomer
 	err := c.BindJSON(&in)

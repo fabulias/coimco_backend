@@ -10,6 +10,7 @@ func InsertTag(in *Tag) (*Tag, bool) {
 	}
 }
 
+//GetTag return info to tag with a ID
 func GetTag(id uint) (Tag, error) {
 	var tag Tag
 	tag.ID = id

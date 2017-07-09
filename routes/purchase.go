@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+//GetPurchase make route to model
 func GetPurchase(c *gin.Context) {
 	provider_id := c.Param("prov_id")
 	purchase, err := model.GetPurchase(provider_id)

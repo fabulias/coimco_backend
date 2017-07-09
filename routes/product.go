@@ -31,6 +31,7 @@ func GetProducts(c *gin.Context) {
 	}
 }
 
+//GetProduct return information from this product
 func GetProduct(c *gin.Context) {
 	id := c.Param("id")
 	id_str, _ := strconv.ParseUint(id, 10, 64)
@@ -88,6 +89,7 @@ func PostProduct(c *gin.Context) {
 	}
 }
 
+//GetRankProductK make route to stats model
 func GetRankProductK(c *gin.Context) {
 	k := c.Param("k")
 	var in model.Date

@@ -21,6 +21,7 @@ func CheckInProvider(in Provider) bool {
 	}
 }
 
+//Return true in case of that all params are okay
 func CheckInPurchaseDetail(in PurchaseDetail) bool {
 	if in.PurchaseID < 1 {
 		return false
@@ -34,6 +35,7 @@ func CheckInPurchaseDetail(in PurchaseDetail) bool {
 	return true
 }
 
+//Return true in case of that all params are okay
 func CheckInSaleDetail(in SaleDetail) bool {
 	if in.SaleID < 1 {
 		return false
@@ -47,6 +49,7 @@ func CheckInSaleDetail(in SaleDetail) bool {
 	return true
 }
 
+//Return false in case of that all params are okay
 func CheckInTagCustomer(in TagCustomer) bool {
 	if in.TagID < 0 || strings.Compare(in.CustomerID, "") == 0 {
 		return true
@@ -108,6 +111,7 @@ func CheckInProduct(in Product) bool {
 	return flag
 }
 
+//Print error log
 func checkErr(err error, msg string) {
 	if err != nil {
 		log.Println(msg)

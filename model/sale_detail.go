@@ -1,5 +1,6 @@
 package model
 
+//Struct of sale_detail
 type SaleDetail struct {
 	SaleID    uint `json:"sale_id" binding:"required" gorm:"primary_key"`
 	ProductID uint `json:"product_id" binding:"required" gorm:"primary_key"`

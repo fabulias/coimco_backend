@@ -43,6 +43,7 @@ func PostTag(c *gin.Context) {
 	}
 }
 
+//GetTag makes route to model
 func GetTag(c *gin.Context) {
 	id := c.Param("id")
 	id_str, _ := strconv.ParseUint(id, 10, 64)

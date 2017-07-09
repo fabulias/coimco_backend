@@ -1,3 +1,4 @@
+//This main
 package main
 
 import (
@@ -9,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//Status http to OPTIONS Cors
 var StatusOK = 200
 
 func checkErr(err error, msg string) {
@@ -17,6 +19,7 @@ func checkErr(err error, msg string) {
 	}
 }
 
+//Cors middleware
 func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -34,6 +37,7 @@ func Cors() gin.HandlerFunc {
 	}
 }
 
+//This main function is where We define all routes to out server web
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {

@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//GetSaleDetail makes route to model
 func GetSaleDetail(c *gin.Context) {
 	sale_id := c.Param("sale_id")
 	product_id := c.Param("product_id")
@@ -40,6 +41,7 @@ func GetSaleDetail(c *gin.Context) {
 	}
 }
 
+//PostSaleDetail makes route to model
 func PostSaleDetail(c *gin.Context) {
 	var in model.SaleDetail
 	err := c.BindJSON(&in)

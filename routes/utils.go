@@ -13,6 +13,7 @@ func checkErr(err error, msg string) {
 	}
 }
 
+//checkSize return a state of length in arrays.
 func checkSize(sample interface{}) bool {
 	var flag bool = false
 	switch val := sample.(type) {
